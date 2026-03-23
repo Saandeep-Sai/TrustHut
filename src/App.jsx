@@ -1,12 +1,12 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
+import ChatbotWidget from './components/chatbot/ChatbotWidget';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
 import MapPage from './pages/Map';
-import ChatbotPage from './pages/Chatbot';
 import PostDetail from './pages/PostDetail';
 
 function ProtectedRoute({ children }) {
@@ -52,11 +52,11 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
           <Route path="/map" element={<MapPage />} />
-          <Route path="/chatbot" element={<ChatbotPage />} />
           <Route path="/post/:postId" element={<PostDetail />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
+      <ChatbotWidget />
     </div>
   );
 }
