@@ -1,8 +1,8 @@
-import { GoogleMap, Marker, InfoWindow, useJsApiLoader } from '@react-google-maps/api';
-import { useState } from 'react';
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import { useState, useCallback, useEffect, useRef } from 'react';
 
 const mapContainerStyle = { width: '100%', height: '100%' };
-const defaultCenter = { lat: 17.385, lng: 78.4867 }; // Hyderabad
+const defaultCenter = { lat: 17.385, lng: 78.4867 };
 
 const RISK_MARKER_COLORS = {
   safe: '#22c55e',
@@ -10,25 +10,94 @@ const RISK_MARKER_COLORS = {
   unsafe: '#ef4444',
 };
 
-export default function MapView({ posts = [], apiKey }) {
-  const [selected, setSelected] = useState(null);
+const DARK_MAP_STYLES = [
+  { elementType: 'geometry', stylers: [{ color: '#0d1117' }] },
+  { elementType: 'labels.text.stroke', stylers: [{ color: '#0d1117' }] },
+  { elementType: 'labels.text.fill', stylers: [{ color: '#6e7681' }] },
+  { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#161b22' }] },
+  { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#21262d' }] },
+  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#0d1117' }] },
+  { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#3d4954' }] },
+  { featureType: 'poi', elementType: 'geometry', stylers: [{ color: '#161b22' }] },
+  { featureType: 'poi', elementType: 'labels.text.fill', stylers: [{ color: '#6e7681' }] },
+  { featureType: 'transit', elementType: 'geometry', stylers: [{ color: '#161b22' }] },
+];
+
+const LIBRARIES = ['places', 'geocoding'];
+
+export default function MapView({ posts = [], apiKey, onSelectPost, boundaryGeoJSON }) {
+  const mapRef = useRef(null);
+  const dataLayerRef = useRef(null);
 
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: apiKey || '',
+    libraries: LIBRARIES,
   });
+
+  const onLoad = useCallback((map) => {
+    mapRef.current = map;
+  }, []);
+
+  // Manage boundary overlay via Google Maps Data layer — guarantees old features are removed
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !isLoaded) return;
+
+    // Remove old data layer completely
+    if (dataLayerRef.current) {
+      dataLayerRef.current.setMap(null);
+      dataLayerRef.current = null;
+    }
+
+    // If no boundary, we're done
+    if (!boundaryGeoJSON) return;
+
+    // Create a fresh Data layer
+    const dataLayer = new window.google.maps.Data({ map });
+
+    // Style: dashed red outline with subtle fill
+    dataLayer.setStyle({
+      strokeColor: '#EF4444',
+      strokeWeight: 2.5,
+      strokeOpacity: 0.9,
+      fillColor: '#EF4444',
+      fillOpacity: 0.04,
+      // Note: Data layer doesn't support native dashes, but strokeOpacity < 1 gives a softer look
+    });
+
+    // Add the GeoJSON
+    try {
+      dataLayer.addGeoJson({
+        type: 'Feature',
+        geometry: boundaryGeoJSON,
+      });
+    } catch (err) {
+      console.error('Failed to add GeoJSON boundary:', err);
+    }
+
+    dataLayerRef.current = dataLayer;
+
+    // Cleanup on unmount
+    return () => {
+      if (dataLayerRef.current) {
+        dataLayerRef.current.setMap(null);
+        dataLayerRef.current = null;
+      }
+    };
+  }, [boundaryGeoJSON, isLoaded]);
 
   if (loadError) {
     return (
-      <div className="flex items-center justify-center h-full bg-slate-100 rounded-2xl">
-        <p className="text-slate-500">Failed to load Google Maps. Check your API key.</p>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', background: '#060B14' }}>
+        <p style={{ color: '#64748B' }}>Failed to load Google Maps. Check your API key.</p>
       </div>
     );
   }
 
   if (!isLoaded) {
     return (
-      <div className="flex items-center justify-center h-full bg-slate-100 rounded-2xl">
-        <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full"></div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', background: '#060B14' }}>
+        <div className="spinner" />
       </div>
     );
   }
@@ -38,12 +107,25 @@ export default function MapView({ posts = [], apiKey }) {
     : defaultCenter;
 
   return (
-    <GoogleMap mapContainerStyle={mapContainerStyle} zoom={13} center={center}>
+    <GoogleMap
+      mapContainerStyle={mapContainerStyle}
+      zoom={13}
+      center={center}
+      onLoad={onLoad}
+      options={{
+        styles: DARK_MAP_STYLES,
+        disableDefaultUI: false,
+        zoomControl: true,
+        mapTypeControl: false,
+        streetViewControl: false,
+        fullscreenControl: false,
+      }}
+    >
       {posts.map((post) => (
         <Marker
           key={post.post_id}
           position={{ lat: post.latitude, lng: post.longitude }}
-          onClick={() => setSelected(post)}
+          onClick={() => onSelectPost && onSelectPost(post)}
           icon={{
             path: 'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z',
             fillColor: RISK_MARKER_COLORS[post.risk_level] || '#2563eb',
@@ -55,27 +137,6 @@ export default function MapView({ posts = [], apiKey }) {
           }}
         />
       ))}
-
-      {selected && (
-        <InfoWindow
-          position={{ lat: selected.latitude, lng: selected.longitude }}
-          onCloseClick={() => setSelected(null)}
-        >
-          <div className="p-2 max-w-[250px]">
-            <h3 className="font-semibold text-sm text-slate-900">{selected.title}</h3>
-            <p className="text-xs text-slate-600 mt-1 line-clamp-2">{selected.description}</p>
-            <div className="flex gap-2 mt-2">
-              <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">{selected.accessibility_type}</span>
-              <span className={`text-xs px-2 py-0.5 rounded-full ${
-                selected.risk_level === 'safe' ? 'bg-emerald-100 text-emerald-700' :
-                selected.risk_level === 'moderate' ? 'bg-amber-100 text-amber-700' :
-                'bg-red-100 text-red-700'
-              }`}>{selected.risk_level}</span>
-            </div>
-            <p className="text-xs text-slate-400 mt-1">📍 {selected.location_name}</p>
-          </div>
-        </InfoWindow>
-      )}
     </GoogleMap>
   );
 }

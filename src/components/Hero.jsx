@@ -1,6 +1,6 @@
 // src/components/Hero.jsx
 
-export default function Hero({ onShareClick }) {
+export default function Hero({ onShareClick, onBrowseClick }) {
   return (
     <section style={{
       position: 'relative',
@@ -124,7 +124,7 @@ export default function Hero({ onShareClick }) {
             Share Accessibility Report
           </button>
 
-          <button style={{
+          <button onClick={onBrowseClick} style={{
             padding: '13px 28px', borderRadius: '12px',
             border: '1px solid rgba(255,255,255,0.12)',
             background: 'rgba(255,255,255,0.04)',

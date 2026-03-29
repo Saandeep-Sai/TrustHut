@@ -35,6 +35,7 @@ export const checkLike = (postId) => api.get(`/like/check/${postId}/`);
 export const registerUser = (data) => api.post('/users/register/', data);
 export const getProfile = () => api.get('/users/profile/');
 export const updateProfile = (data) => api.put('/users/profile/', data);
+export const getAllUsers = () => api.get('/users/all/');
 
 // ---- Chatbot ----
 export const chatbotQuery = (query) => api.post('/chatbot/query/', { query });

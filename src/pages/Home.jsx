@@ -1,5 +1,5 @@
 // src/pages/Home.jsx
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Hero from '../components/Hero';
 import PostGrid from '../components/PostGrid';
 import CreatePost from '../components/CreatePost';
@@ -8,6 +8,7 @@ import { getPosts } from '../services/api';
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [showCreate, setShowCreate] = useState(false);
+  const feedRef = useRef(null);
 
   const loadPosts = () => {
     getPosts()
@@ -19,10 +20,16 @@ export default function Home() {
 
   useEffect(() => { loadPosts(); }, []);
 
+  const scrollToFeed = () => {
+    feedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   return (
     <main style={{ background: '#060B14', minHeight: '100vh' }}>
-      <Hero onShareClick={() => setShowCreate(true)} />
-      <PostGrid posts={posts} />
+      <Hero onShareClick={() => setShowCreate(true)} onBrowseClick={scrollToFeed} />
+      <div ref={feedRef}>
+        <PostGrid posts={posts} />
+      </div>
 
       {showCreate && (
         <CreatePost

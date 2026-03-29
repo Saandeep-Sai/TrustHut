@@ -57,7 +57,7 @@ export default function Navbar() {
           border: '1px solid rgba(255,255,255,0.09)',
           borderRadius: '999px', padding: '5px',
         }} className="hide-mobile">
-          {[{ to: '/', label: 'Home' }, { to: '/map', label: 'Map' }, { to: '/profile', label: 'Profile' }].map(({ to, label }) => (
+          {[{ to: '/', label: 'Home' }, { to: '/map', label: 'Map' }, { to: '/profile', label: 'Profile' }, { to: '/admin', label: 'Admin' }].map(({ to, label }) => (
             <Link key={to} to={to} style={{
               padding: '6px 18px', borderRadius: '999px',
               fontSize: '13px', fontWeight: 500, textDecoration: 'none',
@@ -111,7 +111,7 @@ export default function Navbar() {
           background: 'rgba(6,11,20,0.99)', borderBottom: '1px solid rgba(255,255,255,0.06)',
           padding: '16px 24px', display: 'flex', flexDirection: 'column', gap: '4px',
         }}>
-          {[{ to: '/', label: 'Home' }, { to: '/map', label: 'Map' }, { to: '/profile', label: 'Profile' }].map(({ to, label }) => (
+          {[{ to: '/', label: 'Home' }, { to: '/map', label: 'Map' }, { to: '/profile', label: 'Profile' }, { to: '/admin', label: 'Admin' }].map(({ to, label }) => (
             <Link key={to} to={to} style={{ color: '#CBD5E1', textDecoration: 'none', fontSize: '14px', padding: '8px 0' }} onClick={() => setMobileOpen(false)}>{label}</Link>
           ))}
           <div style={{ height: '1px', background: 'rgba(255,255,255,0.06)', margin: '8px 0' }} />
