@@ -25,7 +25,7 @@ const DARK_MAP_STYLES = [
 
 const LIBRARIES = ['places', 'geocoding'];
 
-export default function MapView({ posts = [], apiKey, onSelectPost, boundaryGeoJSON }) {
+export default function MapView({ posts = [], apiKey, onSelectPost, boundaryGeoJSON, fitBounds }) {
   const mapRef = useRef(null);
   const dataLayerRef = useRef(null);
 
@@ -38,7 +38,19 @@ export default function MapView({ posts = [], apiKey, onSelectPost, boundaryGeoJ
     mapRef.current = map;
   }, []);
 
-  // Manage boundary overlay via Google Maps Data layer — guarantees old features are removed
+  // Pan + zoom the map when fitBounds changes
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !isLoaded || !fitBounds) return;
+
+    const bounds = new window.google.maps.LatLngBounds(
+      { lat: fitBounds.south, lng: fitBounds.west },
+      { lat: fitBounds.north, lng: fitBounds.east }
+    );
+    map.fitBounds(bounds, 40); // 40px padding
+  }, [fitBounds, isLoaded]);
+
+  // Manage boundary overlay via Google Maps Data layer
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !isLoaded) return;
@@ -49,23 +61,18 @@ export default function MapView({ posts = [], apiKey, onSelectPost, boundaryGeoJ
       dataLayerRef.current = null;
     }
 
-    // If no boundary, we're done
     if (!boundaryGeoJSON) return;
 
-    // Create a fresh Data layer
     const dataLayer = new window.google.maps.Data({ map });
 
-    // Style: dashed red outline with subtle fill
     dataLayer.setStyle({
       strokeColor: '#EF4444',
       strokeWeight: 2.5,
       strokeOpacity: 0.9,
       fillColor: '#EF4444',
       fillOpacity: 0.04,
-      // Note: Data layer doesn't support native dashes, but strokeOpacity < 1 gives a softer look
     });
 
-    // Add the GeoJSON
     try {
       dataLayer.addGeoJson({
         type: 'Feature',
@@ -77,7 +84,6 @@ export default function MapView({ posts = [], apiKey, onSelectPost, boundaryGeoJ
 
     dataLayerRef.current = dataLayer;
 
-    // Cleanup on unmount
     return () => {
       if (dataLayerRef.current) {
         dataLayerRef.current.setMap(null);

@@ -23,7 +23,8 @@ export default function MapPage() {
   const [filter, setFilter] = useState('all');
   const [selectedPost, setSelectedPost] = useState(null);
   const [citySearch, setCitySearch] = useState('');
-  const [boundaryGeoJSON, setBoundaryGeoJSON] = useState(null); // raw GeoJSON geometry
+  const [boundaryGeoJSON, setBoundaryGeoJSON] = useState(null);
+  const [fitBounds, setFitBounds] = useState(null); // {north, south, east, west}
   const [cityName, setCityName] = useState('');
   const [searching, setSearching] = useState(false);
   const panelRef = useRef(null);
@@ -66,6 +67,32 @@ export default function MapPage() {
     : filtered;
 
   // Fetch actual city boundary from OpenStreetMap Nominatim
+  // Uses multiple strategies for better accuracy
+  async function nominatimSearch(query, extraParams = '') {
+    const base = 'https://nominatim.openstreetmap.org/search';
+    const params = `q=${encodeURIComponent(query)}&format=json&polygon_geojson=1&polygon_threshold=0.002&limit=5${extraParams}`;
+    const res = await fetch(`${base}?${params}`, {
+      headers: { 'User-Agent': 'TrustHut/1.0', 'Accept-Language': 'en' },
+    });
+    return res.json();
+  }
+
+  function pickBestResult(results) {
+    // Prefer results that have Polygon/MultiPolygon geometry
+    const withBoundary = results.filter(
+      r => r.geojson && (r.geojson.type === 'Polygon' || r.geojson.type === 'MultiPolygon')
+    );
+    if (withBoundary.length === 0) return null;
+
+    // Prefer administrative/city results over POIs
+    const adminResult = withBoundary.find(r =>
+      r.class === 'boundary' || r.class === 'place' || r.type === 'city' ||
+      r.type === 'town' || r.type === 'administrative' || r.type === 'suburb' ||
+      r.type === 'village' || r.type === 'state' || r.type === 'district'
+    );
+    return adminResult || withBoundary[0];
+  }
+
   const handleCitySearch = async (e) => {
     e.preventDefault();
     if (!citySearch.trim()) {
@@ -75,38 +102,49 @@ export default function MapPage() {
     }
 
     setSearching(true);
-    setBoundaryGeoJSON(null); // clear previous boundary immediately
-    try {
-      const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(citySearch.trim())}&format=json&polygon_geojson=1&limit=1`;
-      const res = await fetch(url, {
-        headers: { 'User-Agent': 'TrustHut/1.0' },
-      });
-      const data = await res.json();
+    setBoundaryGeoJSON(null);
+    setFitBounds(null);
 
-      if (data.length === 0) {
-        alert('Could not find that location. Try a different search.');
-        setSearching(false);
-        return;
+    try {
+      // Strategy 1: Search India only (strict — Saidabad should find Hyderabad's Saidabad)
+      let results = await nominatimSearch(citySearch.trim(), '&countrycodes=in');
+      let best = pickBestResult(results);
+
+      // Strategy 2: If no Indian polygon found, try with ", India" appended
+      if (!best) {
+        results = await nominatimSearch(`${citySearch.trim()}, India`);
+        best = pickBestResult(results);
       }
 
-      const result = data[0];
-      const geojson = result.geojson;
+      // Strategy 3: Search globally as last resort
+      if (!best) {
+        results = await nominatimSearch(citySearch.trim());
+        best = pickBestResult(results);
+      }
 
-      if (geojson && (geojson.type === 'Polygon' || geojson.type === 'MultiPolygon')) {
-        setBoundaryGeoJSON(geojson);
-        setCityName(result.display_name.split(',').slice(0, 2).join(', '));
+      if (best) {
+        setBoundaryGeoJSON(best.geojson);
+        setCityName(best.display_name.split(',').slice(0, 2).join(', '));
+
+        // Pan + zoom the map to the result's bounding box
+        if (best.boundingbox) {
+          // Nominatim returns [south, north, west, east]
+          const [south, north, west, east] = best.boundingbox.map(Number);
+          setFitBounds({ north, south, east, west });
+        }
       } else {
-        alert('No boundary data available for this location.');
+        alert('Could not find a boundary for this location. Try a more specific name (e.g. "Saidabad, Hyderabad").');
       }
     } catch (err) {
       console.error('Nominatim error:', err);
-      alert('Failed to fetch boundary. Try again.');
+      alert('Failed to fetch boundary. Please try again.');
     }
     setSearching(false);
   };
 
   const clearCity = () => {
     setBoundaryGeoJSON(null);
+    setFitBounds(null);
     setCityName('');
     setCitySearch('');
   };
@@ -205,6 +243,7 @@ export default function MapPage() {
               apiKey={MAPS_API_KEY}
               onSelectPost={setSelectedPost}
               boundaryGeoJSON={boundaryGeoJSON}
+              fitBounds={fitBounds}
             />
           )}
         </div>

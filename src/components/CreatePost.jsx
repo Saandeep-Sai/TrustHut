@@ -81,6 +81,8 @@ export default function CreatePost({ onClose, onCreated }) {
   const [mediaType, setMediaType] = useState('image');
   const [dragOver, setDragOver] = useState(false);
   const fileInputRef = useRef(null);
+  const cameraPhotoRef = useRef(null);
+  const cameraVideoRef = useRef(null);
 
   const { isLoaded } = useJsApiLoader({ googleMapsApiKey: MAPS_API_KEY });
 
@@ -246,41 +248,80 @@ export default function CreatePost({ onClose, onCreated }) {
             }}>{error}</div>
           )}
 
-          {/* MEDIA UPLOAD */}
+          {/* MEDIA UPLOAD / CAPTURE */}
           <div>
             <label style={s.label}>
-              Upload Photo / Video <span style={{ color: '#EF4444', fontWeight: 400, textTransform: 'none' }}>*</span>
+              Upload or Capture Photo / Video <span style={{ color: '#EF4444', fontWeight: 400, textTransform: 'none' }}>*</span>
             </label>
 
             {!mediaPreview ? (
-              <div
-                onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
-                onDragLeave={() => setDragOver(false)}
-                onDrop={handleDrop}
-                onClick={() => fileInputRef.current?.click()}
-                style={{
-                  border: `2px dashed ${dragOver ? '#2563EB' : 'rgba(255,255,255,0.12)'}`,
-                  borderRadius: '14px', padding: '32px 16px', textAlign: 'center',
-                  cursor: 'pointer', transition: 'all 0.25s ease',
-                  background: dragOver ? 'rgba(37,99,235,0.06)' : 'rgba(255,255,255,0.02)',
-                }}
-              >
-                <div style={{
-                  width: '48px', height: '48px', borderRadius: '14px', margin: '0 auto 12px',
-                  background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.2)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>
-                  <svg width="22" height="22" fill="none" stroke="#60A5FA" viewBox="0 0 24 24" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                  </svg>
+              <>
+                {/* Drag & drop zone */}
+                <div
+                  onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+                  onDragLeave={() => setDragOver(false)}
+                  onDrop={handleDrop}
+                  onClick={() => fileInputRef.current?.click()}
+                  style={{
+                    border: `2px dashed ${dragOver ? '#2563EB' : 'rgba(255,255,255,0.12)'}`,
+                    borderRadius: '14px', padding: '24px 16px', textAlign: 'center',
+                    cursor: 'pointer', transition: 'all 0.25s ease',
+                    background: dragOver ? 'rgba(37,99,235,0.06)' : 'rgba(255,255,255,0.02)',
+                  }}
+                >
+                  <div style={{
+                    width: '44px', height: '44px', borderRadius: '12px', margin: '0 auto 10px',
+                    background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.2)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}>
+                    <svg width="20" height="20" fill="none" stroke="#60A5FA" viewBox="0 0 24 24" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                    </svg>
+                  </div>
+                  <p style={{ color: '#94A3B8', fontSize: '13px', fontWeight: 500, margin: '0 0 4px' }}>
+                    Click to upload or drag & drop
+                  </p>
+                  <p style={{ color: '#475569', fontSize: '11px', margin: 0 }}>
+                    Images auto-compressed • Videos max 750 KB
+                  </p>
                 </div>
-                <p style={{ color: '#94A3B8', fontSize: '13px', fontWeight: 500, margin: '0 0 4px' }}>
-                  Click to upload or drag & drop
-                </p>
-                <p style={{ color: '#475569', fontSize: '11px', margin: 0 }}>
-                  Images auto-compressed • Videos max 750 KB
-                </p>
-              </div>
+
+                {/* Camera capture buttons */}
+                <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
+                  {/* Take Photo */}
+                  <button type="button" onClick={() => cameraPhotoRef.current?.click()} style={{
+                    flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+                    padding: '10px 12px', borderRadius: '10px', fontSize: '12px', fontWeight: 600,
+                    background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)',
+                    color: '#34D399', cursor: 'pointer', transition: 'all 0.2s', fontFamily: 'inherit',
+                  }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(16,185,129,0.15)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'rgba(16,185,129,0.08)'}
+                  >
+                    <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+                    </svg>
+                    📸 Take Photo
+                  </button>
+
+                  {/* Record Video */}
+                  <button type="button" onClick={() => cameraVideoRef.current?.click()} style={{
+                    flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+                    padding: '10px 12px', borderRadius: '10px', fontSize: '12px', fontWeight: 600,
+                    background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)',
+                    color: '#F87171', cursor: 'pointer', transition: 'all 0.2s', fontFamily: 'inherit',
+                  }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(239,68,68,0.15)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'rgba(239,68,68,0.08)'}
+                  >
+                    <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                      <path strokeLinecap="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
+                    </svg>
+                    🎬 Record Video
+                  </button>
+                </div>
+              </>
             ) : (
               <div style={{
                 position: 'relative', borderRadius: '14px', overflow: 'hidden',
@@ -313,19 +354,38 @@ export default function CreatePost({ onClose, onCreated }) {
                 }}>
                   <span style={{ fontSize: '14px' }}>{mediaType === 'video' ? '🎬' : '📸'}</span>
                   <span style={{ color: '#94A3B8', fontSize: '11px', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {mediaFile?.name}
+                    {mediaFile?.name || 'Camera capture'}
                   </span>
                   <span style={{ color: '#475569', fontSize: '10px', flexShrink: 0 }}>
-                    {(mediaFile?.size / 1024).toFixed(0)} KB
+                    {mediaFile?.size ? `${(mediaFile.size / 1024).toFixed(0)} KB` : ''}
                   </span>
                 </div>
               </div>
             )}
 
+            {/* Hidden file inputs */}
             <input
               ref={fileInputRef}
               type="file"
               accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime"
+              onChange={handleFileInputChange}
+              style={{ display: 'none' }}
+            />
+            {/* Camera photo capture — opens native camera on mobile */}
+            <input
+              ref={cameraPhotoRef}
+              type="file"
+              accept="image/*"
+              capture="environment"
+              onChange={handleFileInputChange}
+              style={{ display: 'none' }}
+            />
+            {/* Camera video capture — opens native camera recorder on mobile */}
+            <input
+              ref={cameraVideoRef}
+              type="file"
+              accept="video/*"
+              capture="environment"
               onChange={handleFileInputChange}
               style={{ display: 'none' }}
             />
