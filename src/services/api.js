@@ -37,6 +37,11 @@ export const getProfile = () => api.get('/users/profile/');
 export const updateProfile = (data) => api.put('/users/profile/', data);
 export const getAllUsers = () => api.get('/users/all/');
 
+// ---- Forgot Password OTP ----
+export const sendOtp = (email) => api.post('/users/forgot-password/send-otp/', { email });
+export const verifyOtpAndReset = (email, otp, new_password) =>
+  api.post('/users/forgot-password/verify-otp/', { email, otp, new_password });
+
 // ---- Chatbot ----
 export const chatbotQuery = (query) => api.post('/chatbot/query/', { query });
 

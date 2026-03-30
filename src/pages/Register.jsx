@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signup } from '../services/auth';
 import { useAuth } from '../context/AuthContext';
+import { getPasswordStrength, PasswordStrengthBar } from './Login';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -18,8 +19,15 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    // Password strength validation
+    const strength = getPasswordStrength(password);
+    if (strength.score < 3) {
+      setError('Password is too weak. It must include uppercase, lowercase, numbers, and special characters.');
+      return;
+    }
     if (password !== confirmPassword) { setError('Passwords do not match.'); return; }
-    if (password.length < 6) { setError('Password must be at least 6 characters.'); return; }
+
     setLoading(true);
     try { await signup(name, email, password); navigate('/'); }
     catch (err) { setError(err.message || 'Registration failed.'); }
@@ -72,10 +80,17 @@ export default function Register() {
             <div style={fieldStyle}>
               <label style={labelStyle}>Password</label>
               <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="input" placeholder="••••••••" />
+              <PasswordStrengthBar password={password} />
             </div>
             <div style={fieldStyle}>
               <label style={labelStyle}>Confirm Password</label>
               <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required className="input" placeholder="••••••••" />
+              {confirmPassword && password !== confirmPassword && (
+                <span style={{ fontSize: '11px', color: '#F87171', marginTop: '2px' }}>⚠ Passwords do not match</span>
+              )}
+              {confirmPassword && password === confirmPassword && password.length > 0 && (
+                <span style={{ fontSize: '11px', color: '#34D399', marginTop: '2px' }}>✓ Passwords match</span>
+              )}
             </div>
 
             <button type="submit" disabled={loading} style={{
