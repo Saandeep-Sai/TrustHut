@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getAllUsers, getPosts, deletePost } from '../services/api';
+import EditPostModal from '../components/EditPostModal';
 
 const ADMIN_USER = import.meta.env.VITE_ADMIN_USERNAME || 'admin';
 const ADMIN_PASS = import.meta.env.VITE_ADMIN_PASSWORD || '';
@@ -125,6 +126,7 @@ export default function Admin() {
   const [users, setUsers] = useState([]);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editingPost, setEditingPost] = useState(null);
 
   useEffect(() => {
     if (!authenticated) return;
@@ -146,6 +148,10 @@ export default function Admin() {
       await deletePost(id);
       setPosts(posts.filter(p => p.post_id !== id));
     } catch (err) { alert('Failed to delete post.'); }
+  };
+
+  const handlePostUpdated = (updated) => {
+    setPosts(prev => prev.map(p => p.post_id === updated.post_id ? { ...p, ...updated } : p));
   };
 
   const handleLogout = () => {
@@ -289,14 +295,24 @@ export default function Admin() {
                         {p.created_at ? new Date(p.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '—'}
                       </td>
                       <td style={{ ...CELL, textAlign: 'right' }}>
-                        <button onClick={() => handleDeletePost(p.post_id)} style={{
-                          background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)',
-                          color: '#F87171', padding: '5px 12px', borderRadius: '8px',
-                          fontSize: '11px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s',
-                        }}
-                          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.2)'; }}
-                          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.1)'; }}
-                        >Delete</button>
+                        <div style={{ display: 'flex', gap: '6px', justifyContent: 'flex-end' }}>
+                          <button onClick={() => setEditingPost(p)} style={{
+                            background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.25)',
+                            color: '#60A5FA', padding: '5px 12px', borderRadius: '8px',
+                            fontSize: '11px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s',
+                          }}
+                            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(59,130,246,0.2)'; }}
+                            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(59,130,246,0.1)'; }}
+                          >Edit</button>
+                          <button onClick={() => handleDeletePost(p.post_id)} style={{
+                            background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)',
+                            color: '#F87171', padding: '5px 12px', borderRadius: '8px',
+                            fontSize: '11px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s',
+                          }}
+                            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.2)'; }}
+                            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.1)'; }}
+                          >Delete</button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -309,6 +325,15 @@ export default function Admin() {
           )}
         </div>
       </div>
+
+      {/* Edit Post Modal */}
+      {editingPost && (
+        <EditPostModal
+          post={editingPost}
+          onClose={() => setEditingPost(null)}
+          onUpdated={(updated) => { handlePostUpdated(updated); setEditingPost(null); }}
+        />
+      )}
     </div>
   );
 }

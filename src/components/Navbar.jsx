@@ -47,7 +47,7 @@ export default function Navbar() {
               <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.99 8.99a.75.75 0 1 1-1.06 1.061l-1.46-1.46v7.318A2.25 2.25 0 0 1 16.75 22h-3v-5a.75.75 0 0 0-.75-.75h-2A.75.75 0 0 0 10.25 17v5h-3a2.25 2.25 0 0 1-2.25-2.25v-7.318L3.53 13.89a.75.75 0 1 1-1.06-1.06l8.99-8.99Z" />
             </svg>
           </div>
-          <span style={{ fontSize: '15px', fontWeight: 700, color: 'white', letterSpacing: '-0.3px' }}>TrustHut</span>
+          <span style={{ fontSize: '15px', fontWeight: 700, color: 'white', letterSpacing: '-0.3px' }}>SafeSteps</span>
         </Link>
 
         {/* Center pill nav — desktop */}
