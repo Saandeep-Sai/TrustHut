@@ -10,27 +10,28 @@ const GOOGLE_MAPS_LIBRARIES = ['geometry'];
 // String addresses auto-snap to road; lat/lng fall back if needed.
 const HIGHWAY_ROUTES = {
 
-  // NH-65: Hyderabad portion (Kukatpally ↔ LB Nagar Xroads, via SR Nagar–Ameerpet corridor)
+
+  // NH-65: Correct Hyderabad city section — Lakdikapool → Koti → Malakpet → Dilsukhnagar → LB Nagar
+  // This is the actual road labeled NH-65 on Google Maps (south-east corridor, NOT the Kukatpally route)
   'NH-65': {
-    origin:      'JNTU-Kukatpally, Hyderabad',
-    destination: 'LB Nagar X Roads, Hyderabad',
+    origin:      { lat: 17.3934, lng: 78.4617 },   // Lakdikapool (NH-65 city entry from west)
+    destination: { lat: 17.3472, lng: 78.5506 },   // LB Nagar X Roads
     waypoints: [
-      'SR Nagar, Hyderabad',
-      'Ameerpet Metro Station, Hyderabad',
-      'Panjagutta, Hyderabad',
-      'Lakdikapool, Hyderabad',
-      'Nampally, Hyderabad',
+      { lat: 17.3847, lng: 78.4875 },   // Koti (NH-65 road shield visible here)
+      { lat: 17.3713, lng: 78.5010 },   // Malakpet (NH-65 marked)
+      { lat: 17.3686, lng: 78.5303 },   // Dilsukhnagar (NH-65 marked)
     ],
   },
 
-  // NH-65 (LB Nagar section) — Dilsukhnagar to LB Nagar stretch
+  // NH-65 (LB Nagar) — Dilsukhnagar to LB Nagar X Roads short stretch
   'NH-65 (LB Nagar)': {
-    origin:      'Dilsukhnagar, Hyderabad',
-    destination: 'LB Nagar X Roads, Hyderabad',
+    origin:      { lat: 17.3686, lng: 78.5303 },   // Dilsukhnagar
+    destination: { lat: 17.3472, lng: 78.5506 },   // LB Nagar X Roads
     waypoints: [
-      'Saidabad, Hyderabad',
+      { lat: 17.3570, lng: 78.5420 },   // Saroornagar side
     ],
   },
+
 
   // Outer Ring Road — Patancheru Exit 14 clockwise to Ghatkesar
   'Outer Ring Road (ORR)': {
