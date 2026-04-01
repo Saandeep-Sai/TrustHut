@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { likePost, unlikePost, deletePost } from '../services/api';
+import { likePost, unlikePost, deletePost, getComments, addComment, deleteComment as deleteCommentApi } from '../services/api';
 import EditPostModal from './EditPostModal';
 
 const RISK_CONFIG = {
@@ -36,6 +36,12 @@ export default function PostCard({ post: initialPost, onDelete, onUpdate }) {
   const [expanded, setExpanded] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [editing, setEditing] = useState(false);
+  const [commentsOpen, setCommentsOpen] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [commentText, setCommentText] = useState('');
+  const [commentCount, setCommentCount] = useState(0);
+  const [loadingComments, setLoadingComments] = useState(false);
+  const [shareToast, setShareToast] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
   const menuRef = useRef(null);
@@ -66,6 +72,49 @@ export default function PostCard({ post: initialPost, onDelete, onUpdate }) {
       setLiked(!newLiked);
       setLikeCount(p => newLiked ? p - 1 : p + 1);
     }
+  };
+
+  const toggleComments = async () => {
+    const opening = !commentsOpen;
+    setCommentsOpen(opening);
+    if (opening) {
+      setLoadingComments(true);
+      try {
+        const res = await getComments(post.post_id);
+        const data = res.data.data || [];
+        setComments(data);
+        setCommentCount(data.length);
+      } catch { setComments([]); }
+      setLoadingComments(false);
+    }
+  };
+
+  const handleAddComment = async () => {
+    if (!commentText.trim() || !user) return;
+    try {
+      const res = await addComment(post.post_id, commentText.trim());
+      setComments(prev => [...prev, res.data.data]);
+      setCommentCount(prev => prev + 1);
+      setCommentText('');
+    } catch { alert('Failed to post comment.'); }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    try {
+      await deleteCommentApi(commentId);
+      setComments(prev => prev.filter(c => c.comment_id !== commentId));
+      setCommentCount(prev => prev - 1);
+    } catch { alert('Failed to delete comment.'); }
+  };
+
+  const handleShare = async (e) => {
+    e.stopPropagation();
+    const url = `${window.location.origin}/post/${post.post_id}`;
+    const shareData = { title: post.title, text: post.description?.slice(0, 100), url };
+    try {
+      if (navigator.share) await navigator.share(shareData);
+      else { await navigator.clipboard.writeText(url); setShareToast(true); setTimeout(() => setShareToast(false), 2000); }
+    } catch { await navigator.clipboard.writeText(url); setShareToast(true); setTimeout(() => setShareToast(false), 2000); }
   };
 
   const handleDelete = async () => {
@@ -216,16 +265,34 @@ export default function PostCard({ post: initialPost, onDelete, onUpdate }) {
             </svg>
             <span style={{ fontSize: '13px', fontWeight: 600 }}>{likeCount}</span>
           </button>
-          <button style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: '#94A3B8' }}>
+          <button onClick={toggleComments} style={{
+            display: 'flex', alignItems: 'center', gap: '6px',
+            background: 'none', border: 'none', cursor: 'pointer', padding: 0,
+            color: commentsOpen ? '#3B82F6' : '#94A3B8', transition: 'color 0.15s',
+          }}>
             <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.8}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 01-.923 1.785A5.969 5.969 0 006 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337z" />
             </svg>
+            {commentCount > 0 && <span style={{ fontSize: '13px', fontWeight: 600 }}>{commentCount}</span>}
           </button>
-          <button style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: '#94A3B8' }}>
-            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.8}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-            </svg>
-          </button>
+          <div style={{ position: 'relative' }}>
+            <button onClick={handleShare} style={{
+              display: 'flex', alignItems: 'center', gap: '6px',
+              background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: '#94A3B8',
+            }}>
+              <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.8}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+              </svg>
+            </button>
+            {shareToast && (
+              <div style={{
+                position: 'absolute', bottom: '130%', left: '50%', transform: 'translateX(-50%)',
+                padding: '4px 10px', borderRadius: '6px', fontSize: '11px', fontWeight: 500,
+                background: '#10B981', color: 'white', whiteSpace: 'nowrap',
+                animation: 'fadeIn 0.2s ease',
+              }}>Link copied!</div>
+            )}
+          </div>
           <span style={{ marginLeft: 'auto', fontSize: '11px', color: '#475569' }}>{timeAgo(post.created_at)}</span>
         </div>
 
@@ -247,6 +314,66 @@ export default function PostCard({ post: initialPost, onDelete, onUpdate }) {
             cursor: 'pointer', color: '#3B82F6', fontSize: '12px', fontWeight: 500,
           }}>View full details →</button>
         </div>
+
+        {/* ─── COMMENTS SECTION ─── */}
+        {commentsOpen && (
+          <div style={{ padding: '0 16px 14px', borderTop: '1px solid #1A2640' }}>
+            {loadingComments ? (
+              <p style={{ fontSize: '12px', color: '#64748B', padding: '10px 0' }}>Loading comments...</p>
+            ) : (
+              <>
+                {comments.length === 0 && (
+                  <p style={{ fontSize: '12px', color: '#475569', padding: '10px 0', margin: 0 }}>No comments yet.</p>
+                )}
+                <div style={{ maxHeight: '200px', overflowY: 'auto', marginTop: '10px' }}>
+                  {comments.map(c => (
+                    <div key={c.comment_id} style={{
+                      display: 'flex', gap: '8px', marginBottom: '10px', alignItems: 'flex-start',
+                    }}>
+                      <div style={{
+                        width: '28px', height: '28px', borderRadius: '50%', flexShrink: 0,
+                        background: 'linear-gradient(135deg, #6366F1, #3B82F6)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        color: 'white', fontSize: '11px', fontWeight: 700,
+                      }}>{(c.user_name || 'U').charAt(0).toUpperCase()}</div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ fontSize: '12px', fontWeight: 600, color: '#CBD5E1' }}>{c.user_name}</span>
+                          <span style={{ fontSize: '10px', color: '#475569' }}>{timeAgo(c.created_at)}</span>
+                          {user && c.user_id === user.uid && (
+                            <button onClick={() => handleDeleteComment(c.comment_id)} style={{
+                              marginLeft: 'auto', background: 'none', border: 'none',
+                              color: '#64748B', fontSize: '10px', cursor: 'pointer',
+                            }}>✕</button>
+                          )}
+                        </div>
+                        <p style={{ fontSize: '12px', color: '#94A3B8', margin: '2px 0 0', lineHeight: 1.5, wordBreak: 'break-word' }}>{c.text}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                {user && (
+                  <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+                    <input
+                      value={commentText} onChange={e => setCommentText(e.target.value)}
+                      onKeyDown={e => e.key === 'Enter' && handleAddComment()}
+                      placeholder="Add a comment..." maxLength={1000}
+                      style={{
+                        flex: 1, padding: '8px 12px', borderRadius: '8px', fontSize: '12px',
+                        background: '#111827', border: '1px solid #1E293B', color: 'white', outline: 'none',
+                      }}
+                    />
+                    <button onClick={handleAddComment} disabled={!commentText.trim()} style={{
+                      padding: '8px 14px', borderRadius: '8px', fontSize: '12px', fontWeight: 600,
+                      border: 'none', cursor: commentText.trim() ? 'pointer' : 'not-allowed',
+                      background: commentText.trim() ? '#2563EB' : '#1E293B', color: 'white',
+                    }}>Post</button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Edit Modal */}

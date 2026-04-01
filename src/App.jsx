@@ -9,6 +9,8 @@ import Profile from './pages/Profile';
 import MapPage from './pages/Map';
 import PostDetail from './pages/PostDetail';
 import Admin from './pages/Admin';
+import HighwaySafety from './pages/HighwaySafety';
+import RouteOptimizer from './pages/RouteOptimizer';
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -53,6 +55,8 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
           <Route path="/map" element={<MapPage />} />
+          <Route path="/highway-safety" element={<HighwaySafety />} />
+          <Route path="/route-optimizer" element={<RouteOptimizer />} />
           <Route path="/post/:postId" element={<PostDetail />} />
           <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/" />} />

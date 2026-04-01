@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getPost, likePost, unlikePost } from '../services/api';
+import { useAuth } from '../context/AuthContext';
+import { getPost, likePost, unlikePost, getComments, addComment, deleteComment as deleteCommentApi } from '../services/api';
 
 const RISK_CONFIG = {
   unsafe:      { bg: 'rgba(239,68,68,0.12)', border: 'rgba(239,68,68,0.25)', color: '#F87171', dot: '#EF4444', label: 'High Risk' },
@@ -13,14 +13,25 @@ const TYPE_LABEL = { elder: 'Mobility Issue', wheelchair: 'Wheelchair Access', g
 export default function PostDetail() {
   const { postId } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
+  const [comments, setComments] = useState([]);
+  const [commentText, setCommentText] = useState('');
+  const [shareToast, setShareToast] = useState(false);
 
   useEffect(() => {
-    getPost(postId)
-      .then(r => { setPost(r.data.data); setLikeCount(r.data.data?.likes_count || 0); })
+    Promise.all([
+      getPost(postId),
+      getComments(postId)
+    ])
+      .then(([postRes, commentsRes]) => {
+        setPost(postRes.data.data);
+        setLikeCount(postRes.data.data?.likes_count || 0);
+        setComments(commentsRes.data.data || []);
+      })
       .catch(() => setPost(null))
       .finally(() => setLoading(false));
   }, [postId]);
@@ -36,6 +47,31 @@ export default function PostDetail() {
       setLiked(!newLiked);
       setLikeCount(p => newLiked ? p - 1 : p + 1);
     }
+  };
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    const shareData = { title: post.title, text: post.description?.slice(0, 100), url };
+    try {
+      if (navigator.share) await navigator.share(shareData);
+      else { await navigator.clipboard.writeText(url); setShareToast(true); setTimeout(() => setShareToast(false), 2000); }
+    } catch { await navigator.clipboard.writeText(url); setShareToast(true); setTimeout(() => setShareToast(false), 2000); }
+  };
+
+  const handleAddComment = async () => {
+    if (!commentText.trim() || !user) return;
+    try {
+      const res = await addComment(postId, commentText.trim());
+      setComments(prev => [...prev, res.data.data]);
+      setCommentText('');
+    } catch { alert('Failed to post comment.'); }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    try {
+      await deleteCommentApi(commentId);
+      setComments(prev => prev.filter(c => c.comment_id !== commentId));
+    } catch { alert('Failed to delete comment.'); }
   };
 
   if (loading) return (
@@ -128,15 +164,24 @@ export default function PostDetail() {
               </svg>
               <span style={{ fontSize: '14px', fontWeight: 600 }}>{likeCount} likes</span>
             </button>
-            <button style={{
-              display: 'flex', alignItems: 'center', gap: '6px',
-              background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: '#94A3B8',
-            }}>
-              <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.8}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-              </svg>
-              <span style={{ fontSize: '14px', fontWeight: 500 }}>Share</span>
-            </button>
+            <div style={{ position: 'relative' }}>
+              <button onClick={handleShare} style={{
+                display: 'flex', alignItems: 'center', gap: '6px',
+                background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: '#94A3B8',
+              }}>
+                <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.8}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                </svg>
+                <span style={{ fontSize: '14px', fontWeight: 500 }}>Share</span>
+              </button>
+              {shareToast && (
+                <div style={{
+                  position: 'absolute', bottom: '130%', left: '50%', transform: 'translateX(-50%)',
+                  padding: '4px 10px', borderRadius: '6px', fontSize: '11px', fontWeight: 500,
+                  background: '#10B981', color: 'white', whiteSpace: 'nowrap',
+                }}>Link copied!</div>
+              )}
+            </div>
           </div>
 
           {/* Content */}
@@ -171,6 +216,72 @@ export default function PostDetail() {
                 label="Risk Level"
                 value={risk.label}
               />
+              {post.post_type === 'highway' && (
+                <>
+                  <DetailItem icon="🛣️" label="Route Name" value={post.route_name || 'Not specified'} />
+                  <DetailItem icon="⚠️" label="Risk Category" value={post.risk_category?.replace('_', ' ') || 'Not specified'} />
+                </>
+              )}
+            </div>
+
+            {/* Comments Section */}
+            <div style={{ marginTop: '32px', borderTop: '1px solid #1A2640', paddingTop: '24px' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'white', margin: '0 0 16px' }}>
+                Comments ({comments.length})
+              </h3>
+              
+              {user && (
+                <div style={{ display: 'flex', gap: '10px', marginBottom: '24px' }}>
+                  <input
+                    value={commentText} onChange={e => setCommentText(e.target.value)}
+                    onKeyDown={e => e.key === 'Enter' && handleAddComment()}
+                    placeholder="Add a comment..." maxLength={1000}
+                    style={{
+                      flex: 1, padding: '10px 14px', borderRadius: '10px', fontSize: '14px',
+                      background: '#111827', border: '1px solid #1E293B', color: 'white', outline: 'none',
+                    }}
+                  />
+                  <button onClick={handleAddComment} disabled={!commentText.trim()} style={{
+                    padding: '10px 20px', borderRadius: '10px', fontSize: '13px', fontWeight: 600,
+                    border: 'none', cursor: commentText.trim() ? 'pointer' : 'not-allowed',
+                    background: commentText.trim() ? '#2563EB' : '#1E293B', color: 'white',
+                  }}>Post</button>
+                </div>
+              )}
+
+              {comments.length === 0 ? (
+                <p style={{ fontSize: '14px', color: '#64748B' }}>No comments yet. Be the first to share your thoughts!</p>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {comments.map(c => (
+                    <div key={c.comment_id} style={{ display: 'flex', gap: '12px' }}>
+                      <div style={{
+                        width: '36px', height: '36px', borderRadius: '50%', flexShrink: 0,
+                        background: 'linear-gradient(135deg, #6366F1, #3B82F6)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        color: 'white', fontSize: '14px', fontWeight: 700,
+                      }}>{(c.user_name || 'U').charAt(0).toUpperCase()}</div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span style={{ fontSize: '14px', fontWeight: 600, color: '#E2E8F0' }}>{c.user_name}</span>
+                          <span style={{ fontSize: '12px', color: '#64748B' }}>
+                            {new Date(c.created_at).toLocaleDateString()}
+                          </span>
+                          {user && c.user_id === user.uid && (
+                            <button onClick={() => handleDeleteComment(c.comment_id)} style={{
+                              marginLeft: 'auto', background: 'none', border: 'none',
+                              color: '#64748B', fontSize: '12px', cursor: 'pointer',
+                            }}>Delete</button>
+                          )}
+                        </div>
+                        <p style={{ fontSize: '14px', color: '#94A3B8', margin: '4px 0 0', lineHeight: 1.6, wordBreak: 'break-word' }}>
+                          {c.text}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

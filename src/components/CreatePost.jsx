@@ -67,6 +67,7 @@ export default function CreatePost({ onClose, onCreated }) {
     title: '', description: '', location_name: '',
     latitude: '', longitude: '',
     accessibility_type: 'general', risk_level: 'safe',
+    post_type: 'place', risk_category: '', route_name: '',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -527,6 +528,23 @@ export default function CreatePost({ onClose, onCreated }) {
             ))}
           </div>
 
+          {/* Post Type */}
+          <div>
+            <label style={s.label}>Report Type</label>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              {[{ v: 'place', l: '📍 Place', c: '#3B82F6' }, { v: 'highway', l: '🛣️ Highway', c: '#F59E0B' }].map(opt => (
+                <button key={opt.v} type="button" onClick={() => setForm(p => ({ ...p, post_type: opt.v }))}
+                  style={{
+                    flex: 1, padding: '9px 12px', borderRadius: '10px', fontSize: '12px', fontWeight: 600,
+                    cursor: 'pointer', transition: 'all 0.2s', fontFamily: 'inherit',
+                    border: `1px solid ${form.post_type === opt.v ? opt.c : 'rgba(255,255,255,0.09)'}`,
+                    background: form.post_type === opt.v ? `${opt.c}15` : 'rgba(255,255,255,0.03)',
+                    color: form.post_type === opt.v ? opt.c : '#94A3B8',
+                  }}>{opt.l}</button>
+              ))}
+            </div>
+          </div>
+
           {/* Type + Risk */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
             <div>
@@ -548,6 +566,33 @@ export default function CreatePost({ onClose, onCreated }) {
               </select>
             </div>
           </div>
+
+          {/* Highway-specific fields */}
+          {form.post_type === 'highway' && (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px',
+              padding: '14px', borderRadius: '12px', background: 'rgba(245,158,11,0.05)',
+              border: '1px solid rgba(245,158,11,0.15)',
+            }}>
+              <div>
+                <label style={s.label}>⚠️ Risk Category</label>
+                <select name="risk_category" value={form.risk_category} onChange={handleChange}
+                  style={{ ...s.input, cursor: 'pointer' }}>
+                  <option value="">Select category</option>
+                  <option value="accident">🚗 Accident Zone</option>
+                  <option value="sharp_turn">↩️ Sharp Turn</option>
+                  <option value="bad_road">🛣️ Bad Road</option>
+                  <option value="no_lighting">💡 No Lighting</option>
+                  <option value="congestion">🚦 Congestion</option>
+                </select>
+              </div>
+              <div>
+                <label style={s.label}>Route Name (optional)</label>
+                <input name="route_name" value={form.route_name} onChange={handleChange}
+                  placeholder="e.g. NH-44, ORR Exit 5"
+                  style={s.input} onFocus={focusIn} onBlur={focusOut} />
+              </div>
+            </div>
+          )}
 
           {/* Actions */}
           <div style={{ display: 'flex', gap: '10px', paddingTop: '4px' }}>

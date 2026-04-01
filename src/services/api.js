@@ -45,4 +45,15 @@ export const verifyOtpAndReset = (email, otp, new_password) =>
 // ---- Chatbot ----
 export const chatbotQuery = (query) => api.post('/chatbot/query/', { query });
 
+// ---- Highway Safety ----
+export const getHighwayRisks = (params = {}) => api.get('/posts/highways/risks/', { params });
+
+// ---- Route Optimizer ----
+export const scoreRoutes = (routes) => api.post('/routes/score/', { routes });
+
+// ---- Comments ----
+export const getComments = (postId) => api.get(`/comments/${postId}/`);
+export const addComment = (postId, text) => api.post('/comments/', { post_id: postId, text });
+export const deleteComment = (commentId) => api.delete(`/comments/delete/${commentId}/`);
+
 export default api;
