@@ -22,7 +22,7 @@ export default function ChatInput({ onSend, loading }) {
   };
 
   return (
-    <div style={{ borderTop: '1px solid #1E293B', padding: '10px 12px 12px', background: '#0B1120' }}>
+    <div style={{ borderTop: '1px solid var(--border)', padding: '10px 12px 12px', background: 'var(--bg-card)' }}>
       {/* Suggestion pills */}
       <div style={{ display: 'flex', gap: '6px', marginBottom: '8px', flexWrap: 'wrap' }}>
         {SUGGESTIONS.map((s) => (
@@ -51,16 +51,16 @@ export default function ChatInput({ onSend, loading }) {
           disabled={loading}
           style={{
             flex: 1, padding: '9px 12px', fontSize: '12.5px',
-            background: '#020617', border: '1px solid #1E293B', borderRadius: '10px',
-            color: '#E2E8F0', outline: 'none',
+            background: 'var(--bg-input)', border: '1px solid var(--border)', borderRadius: '10px',
+            color: 'var(--text-primary)', outline: 'none',
           }}
           onFocus={e => { e.target.style.borderColor = 'rgba(37,99,235,0.5)'; }}
-          onBlur={e => { e.target.style.borderColor = '#1E293B'; }}
+          onBlur={e => { e.target.style.borderColor = 'var(--border)'; }}
         />
         <button onClick={handleSend} disabled={loading || !text.trim()}
           style={{
             padding: '9px 14px', borderRadius: '10px', border: 'none', cursor: 'pointer',
-            background: text.trim() && !loading ? '#2563EB' : '#1E293B',
+            background: text.trim() && !loading ? '#2563EB' : 'var(--border)',
             color: 'white', fontSize: '12px', fontWeight: 600,
             transition: 'background 0.15s',
             display: 'flex', alignItems: 'center', gap: '4px',

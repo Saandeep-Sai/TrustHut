@@ -51,14 +51,14 @@ export default function Chatbot() {
 
       {/* Panel */}
       {open && (
-        <div className="fixed bottom-20 right-5 z-50 w-[340px] max-w-[calc(100vw-40px)] rounded-2xl overflow-hidden flex flex-col shadow-2xl shadow-black/40 border border-white/[0.06]" style={{ height: '440px', background: '#111827' }}>
+        <div className="fixed bottom-20 right-5 z-50 w-[340px] max-w-[calc(100vw-40px)] rounded-2xl overflow-hidden flex flex-col shadow-2xl shadow-black/40 border border-white/[0.06]" style={{ height: '440px', background: 'var(--bg-input)' }}>
           {/* Header */}
           <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-3.5 flex items-center gap-3 relative overflow-hidden">
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMC44IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IGZpbGw9InVybCgjZykiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiLz48L3N2Zz4=')] opacity-50" />
             <div className="relative flex items-center gap-3">
               <div className="w-7 h-7 bg-white/15 rounded-lg flex items-center justify-center text-xs backdrop-blur-sm">🤖</div>
               <div>
-                <h3 className="font-semibold text-white text-sm leading-none">TrustHut Assistant</h3>
+                <h3 className="font-semibold text-white text-sm leading-none">SafeSteps Assistant</h3>
                 <div className="flex items-center gap-1 mt-0.5">
                   <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
                   <span className="text-[0.625rem] text-indigo-200">Online</span>

@@ -4,7 +4,7 @@ import { sendMessage } from '../../services/chatbot';
 
 const WELCOME = {
   role: 'bot',
-  text: "Hello! 👋 I'm your TrustHut accessibility assistant.\n\nI can help you understand accessibility reports, check if locations are safe for elderly or wheelchair users, and guide you through the platform.\n\nAsk me anything!",
+  text: "Hello! 👋 I'm your SafeSteps accessibility assistant.\n\nI can help you understand accessibility reports, check if locations are safe for elderly or wheelchair users, and guide you through the platform.\n\nAsk me anything!",
 };
 
 export default function ChatbotWidget() {
@@ -51,8 +51,8 @@ export default function ChatbotWidget() {
         onClick={() => setIsOpen(prev => !prev)}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        aria-label="Ask TrustHut Assistant"
-        title="Ask TrustHut Assistant"
+        aria-label="Ask SafeSteps Assistant"
+        title="Ask SafeSteps Assistant"
         style={{
           position: 'fixed', bottom: '24px', left: '24px', zIndex: 9999,
           width: '56px', height: '56px', borderRadius: '50%', border: 'none',

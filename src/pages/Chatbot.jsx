@@ -11,7 +11,7 @@ const SUGGESTIONS = [
 
 export default function ChatbotPage() {
   const [messages, setMessages] = useState([
-    { role: 'bot', text: "Hello! 👋 I'm the TrustHut Assistant.\n\nI can help you understand accessibility risks and find safe locations for elderly and disabled users.\n\nAsk me anything, or try a suggested query below!" },
+    { role: 'bot', text: "Hello! 👋 I'm the SafeSteps Assistant.\n\nI can help you understand accessibility risks and find safe locations for elderly and disabled users.\n\nAsk me anything, or try a suggested query below!" },
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -41,7 +41,7 @@ export default function ChatbotPage() {
   const handleSubmit = (e) => { e.preventDefault(); send(input); };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#060B14', paddingTop: '72px' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-base)', paddingTop: '72px' }}>
       <div style={{
         maxWidth: '860px', margin: '0 auto', padding: '0 20px',
         height: 'calc(100vh - 72px)',
@@ -62,8 +62,8 @@ export default function ChatbotPage() {
             <span style={{ fontSize: '20px' }}>🤖</span>
           </div>
           <div style={{ flex: 1 }}>
-            <h1 style={{ fontSize: '18px', fontWeight: 700, color: 'white', margin: 0, letterSpacing: '-0.3px' }}>TrustHut Assistant</h1>
-            <p style={{ color: '#64748B', fontSize: '12px', margin: '2px 0 0' }}>AI-powered accessibility advisor</p>
+            <h1 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', margin: 0, letterSpacing: '-0.3px' }}>SafeSteps Assistant</h1>
+            <p style={{ color: 'var(--text-muted)', fontSize: '12px', margin: '2px 0 0' }}>AI-powered accessibility advisor</p>
           </div>
           <div style={{
             display: 'flex', alignItems: 'center', gap: '6px',
@@ -82,7 +82,7 @@ export default function ChatbotPage() {
         {/* Chat container */}
         <div style={{
           flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden',
-          background: '#0C1322', border: '1px solid #1A2640', borderRadius: '20px',
+          background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '20px',
           marginBottom: '16px',
         }}>
           {/* Messages area */}
@@ -102,7 +102,7 @@ export default function ChatbotPage() {
                   display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px',
                 }}>🤖</div>
                 <div style={{
-                  background: '#111B2E', border: '1px solid #1A2640',
+                  background: 'var(--bg-card-hover)', border: '1px solid var(--border)',
                   padding: '14px 18px', borderRadius: '16px', borderBottomLeftRadius: '4px',
                 }}>
                   <div style={{ display: 'flex', gap: '6px' }}>
@@ -122,23 +122,23 @@ export default function ChatbotPage() {
             <div style={{ padding: '0 24px 16px' }}>
               <div style={{
                 height: '1px', marginBottom: '14px',
-                background: 'linear-gradient(to right, transparent, #1A2640 30%, #1A2640 70%, transparent)',
+                background: 'linear-gradient(to right, transparent, var(--border) 30%, var(--border) 70%, transparent)',
               }} />
               <p style={{
-                fontSize: '10px', color: '#475569', textTransform: 'uppercase',
+                fontSize: '10px', color: 'var(--text-dim)', textTransform: 'uppercase',
                 letterSpacing: '0.12em', fontWeight: 600, marginBottom: '10px',
               }}>Try asking</p>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
                 {SUGGESTIONS.map(s => (
                   <button key={s} onClick={() => send(s)} style={{
-                    padding: '10px 14px', fontSize: '12px', color: '#94A3B8',
-                    border: '1px solid #1A2640', borderRadius: '12px',
-                    background: 'rgba(255,255,255,0.02)', cursor: 'pointer',
+                    padding: '10px 14px', fontSize: '12px', color: 'var(--text-secondary)',
+                    border: '1px solid var(--border)', borderRadius: '12px',
+                    background: 'var(--bg-card-hover)', cursor: 'pointer',
                     transition: 'all 0.2s ease', fontFamily: 'inherit',
                     textAlign: 'left', lineHeight: 1.4,
                   }}
                     onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(99,102,241,0.4)'; e.currentTarget.style.color = '#A5B4FC'; e.currentTarget.style.background = 'rgba(99,102,241,0.06)'; }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor = '#1A2640'; e.currentTarget.style.color = '#94A3B8'; e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-secondary)'; e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; }}
                   >
                     {s}
                   </button>
@@ -149,8 +149,8 @@ export default function ChatbotPage() {
 
           {/* Input */}
           <form onSubmit={handleSubmit} style={{
-            padding: '16px 20px', borderTop: '1px solid #1A2640',
-            background: 'rgba(6,11,20,0.5)',
+            padding: '16px 20px', borderTop: '1px solid var(--border)',
+            background: 'rgba(0,0,0,0.4)',
           }}>
             <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
               <input
@@ -161,13 +161,13 @@ export default function ChatbotPage() {
                 disabled={loading}
                 style={{
                   flex: 1, padding: '12px 16px', borderRadius: '12px',
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  color: '#E2E8F0', fontSize: '13px', fontFamily: 'inherit',
+                  background: 'var(--nav-pill-bg)',
+                  border: '1px solid var(--nav-pill-border)',
+                  color: 'var(--text-primary)', fontSize: '13px', fontFamily: 'inherit',
                   outline: 'none', transition: 'border-color 0.2s',
                 }}
                 onFocus={e => { e.target.style.borderColor = 'rgba(99,102,241,0.4)'; }}
-                onBlur={e => { e.target.style.borderColor = 'rgba(255,255,255,0.08)'; }}
+                onBlur={e => { e.target.style.borderColor = 'var(--nav-pill-border)'; }}
               />
               <button type="submit" disabled={loading || !input.trim()} style={{
                 padding: '12px 20px', borderRadius: '12px', border: 'none',

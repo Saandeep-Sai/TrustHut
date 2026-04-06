@@ -37,19 +37,19 @@ function compressImage(file, maxDim = 800, quality = 0.72) {
 const S = {
   label: {
     display: 'block', fontSize: '11px', fontWeight: 700,
-    color: '#64748B', marginBottom: '5px',
+    color: 'var(--text-muted)', marginBottom: '5px',
     textTransform: 'uppercase', letterSpacing: '0.08em',
   },
   input: {
     width: '100%', padding: '10px 14px', fontSize: '13px',
-    background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)',
-    borderRadius: '10px', color: '#E2E8F0', outline: 'none',
+    background: 'var(--nav-pill-bg)', border: '1px solid var(--nav-pill-border)',
+    borderRadius: '10px', color: 'var(--text-primary)', outline: 'none',
     boxSizing: 'border-box', fontFamily: 'inherit', transition: 'border-color 0.2s',
   },
   select: {
     width: '100%', padding: '10px 14px', fontSize: '13px',
-    background: '#0F172A', border: '1px solid rgba(255,255,255,0.09)',
-    borderRadius: '10px', color: '#E2E8F0', outline: 'none',
+    background: 'var(--bg-card)', border: '1px solid var(--nav-pill-border)',
+    borderRadius: '10px', color: 'var(--text-primary)', outline: 'none',
     boxSizing: 'border-box', fontFamily: 'inherit', cursor: 'pointer',
   },
 };
@@ -152,7 +152,7 @@ export default function EditPostModal({ post, onClose, onUpdated }) {
         onClick={e => e.stopPropagation()}
         style={{
           width: '100%', maxWidth: '560px',
-          background: '#0F172A', border: '1px solid rgba(255,255,255,0.09)',
+          background: 'var(--bg-card)', border: '1px solid var(--nav-pill-border)',
           borderRadius: '20px', boxShadow: '0 25px 60px rgba(0,0,0,0.6)',
           overflow: 'hidden', margin: 'auto',
         }}
@@ -161,7 +161,7 @@ export default function EditPostModal({ post, onClose, onUpdated }) {
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '18px 24px', borderBottom: '1px solid rgba(255,255,255,0.07)',
-          background: 'rgba(255,255,255,0.02)',
+          background: 'var(--bg-card-hover)',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{
@@ -174,11 +174,11 @@ export default function EditPostModal({ post, onClose, onUpdated }) {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z" />
               </svg>
             </div>
-            <h2 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'white' }}>Edit Report</h2>
+            <h2 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Edit Report</h2>
           </div>
           <button onClick={onClose} style={{
-            background: 'rgba(255,255,255,0.05)', border: 'none', borderRadius: '8px',
-            width: '32px', height: '32px', cursor: 'pointer', color: '#94A3B8',
+            background: 'var(--nav-pill-bg)', border: 'none', borderRadius: '8px',
+            width: '32px', height: '32px', cursor: 'pointer', color: 'var(--text-secondary)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
             <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
@@ -210,7 +210,7 @@ export default function EditPostModal({ post, onClose, onUpdated }) {
             />
 
             {imagePreview ? (
-              <div style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
+              <div style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--nav-pill-border)' }}>
                 <img
                   src={imagePreview}
                   alt="Preview"
@@ -244,7 +244,7 @@ export default function EditPostModal({ post, onClose, onUpdated }) {
                   width: '100%', padding: '28px', borderRadius: '12px', cursor: 'pointer',
                   background: 'rgba(59,130,246,0.04)',
                   border: '2px dashed rgba(59,130,246,0.25)',
-                  color: '#94A3B8', fontSize: '13px', display: 'flex',
+                  color: 'var(--text-secondary)', fontSize: '13px', display: 'flex',
                   flexDirection: 'column', alignItems: 'center', gap: '8px',
                   transition: 'all 0.2s',
                 }}
@@ -253,7 +253,7 @@ export default function EditPostModal({ post, onClose, onUpdated }) {
               >
                 <span style={{ fontSize: '24px' }}>🖼️</span>
                 <span>Click to upload image</span>
-                <span style={{ fontSize: '11px', color: '#475569' }}>JPEG, PNG, WebP, GIF · max 1.5 MB</span>
+                <span style={{ fontSize: '11px', color: 'var(--text-dim)' }}>JPEG, PNG, WebP, GIF · max 1.5 MB</span>
               </button>
             )}
 
@@ -331,8 +331,8 @@ export default function EditPostModal({ post, onClose, onUpdated }) {
           <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', paddingTop: '4px' }}>
             <button type="button" onClick={onClose} style={{
               padding: '10px 22px', borderRadius: '10px', fontSize: '13px', fontWeight: 600,
-              background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)',
-              color: '#94A3B8', cursor: 'pointer',
+              background: 'var(--nav-pill-bg)', border: '1px solid var(--nav-pill-border)',
+              color: 'var(--text-secondary)', cursor: 'pointer',
             }}>Cancel</button>
             <button type="submit" disabled={saving} style={{
               padding: '10px 28px', borderRadius: '10px', fontSize: '13px', fontWeight: 700,

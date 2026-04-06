@@ -25,7 +25,7 @@ export default function Home() {
   };
 
   return (
-    <main style={{ background: '#060B14', minHeight: '100vh' }}>
+    <main style={{ background: 'var(--bg-base)', minHeight: '100vh' }}>
       <Hero onShareClick={() => setShowCreate(true)} onBrowseClick={scrollToFeed} />
       <div ref={feedRef}>
         <PostGrid posts={posts} />

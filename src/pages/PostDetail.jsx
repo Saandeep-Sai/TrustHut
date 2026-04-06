@@ -75,14 +75,14 @@ export default function PostDetail() {
   };
 
   if (loading) return (
-    <div style={{ minHeight: '100vh', background: '#060B14', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-base)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div className="spinner" />
     </div>
   );
 
   if (!post) return (
-    <div style={{ minHeight: '100vh', background: '#060B14', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
-      <p style={{ color: '#64748B', fontSize: '14px' }}>Post not found.</p>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-base)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
+      <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>Post not found.</p>
       <button onClick={() => navigate('/')} className="btn btn-primary">Go Home</button>
     </div>
   );
@@ -97,14 +97,14 @@ export default function PostDetail() {
   }) : '';
 
   return (
-    <div style={{ minHeight: '100vh', background: '#060B14', paddingTop: '72px', paddingBottom: '64px' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-base)', paddingTop: '72px', paddingBottom: '64px' }}>
       <div style={{ maxWidth: '680px', margin: '0 auto', padding: '0 16px' }}>
 
         {/* Back */}
         <button onClick={() => navigate(-1)} style={{
           display: 'flex', alignItems: 'center', gap: '6px',
           background: 'none', border: 'none', cursor: 'pointer',
-          color: '#64748B', fontSize: '13px', marginBottom: '20px', padding: 0,
+          color: 'var(--text-muted)', fontSize: '13px', marginBottom: '20px', padding: 0,
         }}>
           <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
@@ -114,7 +114,7 @@ export default function PostDetail() {
 
         {/* Post card */}
         <div style={{
-          background: '#0C1322', border: '1px solid #1A2640',
+          background: 'var(--bg-card)', border: '1px solid var(--border)',
           borderRadius: '20px', overflow: 'hidden',
         }}>
 
@@ -124,13 +124,13 @@ export default function PostDetail() {
               width: '42px', height: '42px', borderRadius: '50%', flexShrink: 0,
               background: 'linear-gradient(135deg, #6366F1, #3B82F6)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: 'white', fontSize: '15px', fontWeight: 700,
+              color: 'var(--text-primary)', fontSize: '15px', fontWeight: 700,
             }}>
               {userName.charAt(0).toUpperCase()}
             </div>
             <div style={{ flex: 1 }}>
-              <p style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: 'white' }}>{userName}</p>
-              <p style={{ margin: '2px 0 0', fontSize: '11px', color: '#64748B' }}>{created}</p>
+              <p style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>{userName}</p>
+              <p style={{ margin: '2px 0 0', fontSize: '11px', color: 'var(--text-muted)' }}>{created}</p>
             </div>
             <div style={{
               display: 'flex', alignItems: 'center', gap: '5px',
@@ -143,7 +143,7 @@ export default function PostDetail() {
           </div>
 
           {/* Media */}
-          <div style={{ width: '100%', background: '#080E1A' }}>
+          <div style={{ width: '100%', background: 'var(--bg-base)' }}>
             {isVideo && hasMedia ? (
               <video src={mediaSrc} controls playsInline style={{ width: '100%', maxHeight: '500px', objectFit: 'contain', display: 'block' }} />
             ) : (
@@ -156,7 +156,7 @@ export default function PostDetail() {
             <button onClick={handleLike} style={{
               display: 'flex', alignItems: 'center', gap: '7px',
               background: 'none', border: 'none', cursor: 'pointer', padding: 0,
-              color: liked ? '#F43F5E' : '#94A3B8', transition: 'color 0.15s',
+              color: liked ? '#F43F5E' : 'var(--text-secondary)', transition: 'color 0.15s',
             }}>
               <svg width="22" height="22" fill={liked ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.8}
                 style={{ transform: liked ? 'scale(1.15)' : 'scale(1)', transition: 'transform 0.2s' }}>
@@ -167,7 +167,7 @@ export default function PostDetail() {
             <div style={{ position: 'relative' }}>
               <button onClick={handleShare} style={{
                 display: 'flex', alignItems: 'center', gap: '6px',
-                background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: '#94A3B8',
+                background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: 'var(--text-secondary)',
               }}>
                 <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.8}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
@@ -187,10 +187,10 @@ export default function PostDetail() {
           {/* Content */}
           <div style={{ padding: '0 20px 24px' }}>
             {/* Title */}
-            <h1 style={{ fontSize: '20px', fontWeight: 800, color: 'white', margin: '0 0 12px', lineHeight: 1.3 }}>{post.title}</h1>
+            <h1 style={{ fontSize: '20px', fontWeight: 800, color: 'var(--text-primary)', margin: '0 0 12px', lineHeight: 1.3 }}>{post.title}</h1>
 
             {/* Description */}
-            <p style={{ fontSize: '14px', color: '#CBD5E1', lineHeight: 1.8, margin: '0 0 20px', whiteSpace: 'pre-line' }}>
+            <p style={{ fontSize: '14px', color: 'var(--text-primary)', lineHeight: 1.8, margin: '0 0 20px', whiteSpace: 'pre-line' }}>
               {post.description}
             </p>
 
@@ -198,7 +198,7 @@ export default function PostDetail() {
             <div style={{
               display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px',
               padding: '16px', borderRadius: '14px',
-              background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
+              background: 'var(--bg-card-hover)', border: '1px solid var(--nav-border)',
             }}>
               <DetailItem icon="📍" label="Location" value={post.location_name} />
               <DetailItem
@@ -225,8 +225,8 @@ export default function PostDetail() {
             </div>
 
             {/* Comments Section */}
-            <div style={{ marginTop: '32px', borderTop: '1px solid #1A2640', paddingTop: '24px' }}>
-              <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'white', margin: '0 0 16px' }}>
+            <div style={{ marginTop: '32px', borderTop: '1px solid var(--border)', paddingTop: '24px' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 16px' }}>
                 Comments ({comments.length})
               </h3>
               
@@ -238,19 +238,19 @@ export default function PostDetail() {
                     placeholder="Add a comment..." maxLength={1000}
                     style={{
                       flex: 1, padding: '10px 14px', borderRadius: '10px', fontSize: '14px',
-                      background: '#111827', border: '1px solid #1E293B', color: 'white', outline: 'none',
+                      background: 'var(--bg-input)', border: '1px solid var(--border)', color: 'var(--text-primary)', outline: 'none',
                     }}
                   />
                   <button onClick={handleAddComment} disabled={!commentText.trim()} style={{
                     padding: '10px 20px', borderRadius: '10px', fontSize: '13px', fontWeight: 600,
                     border: 'none', cursor: commentText.trim() ? 'pointer' : 'not-allowed',
-                    background: commentText.trim() ? '#2563EB' : '#1E293B', color: 'white',
+                    background: commentText.trim() ? '#2563EB' : 'var(--border)', color: 'white',
                   }}>Post</button>
                 </div>
               )}
 
               {comments.length === 0 ? (
-                <p style={{ fontSize: '14px', color: '#64748B' }}>No comments yet. Be the first to share your thoughts!</p>
+                <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>No comments yet. Be the first to share your thoughts!</p>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   {comments.map(c => (
@@ -259,22 +259,22 @@ export default function PostDetail() {
                         width: '36px', height: '36px', borderRadius: '50%', flexShrink: 0,
                         background: 'linear-gradient(135deg, #6366F1, #3B82F6)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        color: 'white', fontSize: '14px', fontWeight: 700,
+                        color: 'var(--text-primary)', fontSize: '14px', fontWeight: 700,
                       }}>{(c.user_name || 'U').charAt(0).toUpperCase()}</div>
                       <div style={{ flex: 1 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <span style={{ fontSize: '14px', fontWeight: 600, color: '#E2E8F0' }}>{c.user_name}</span>
-                          <span style={{ fontSize: '12px', color: '#64748B' }}>
+                          <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>{c.user_name}</span>
+                          <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
                             {new Date(c.created_at).toLocaleDateString()}
                           </span>
                           {user && c.user_id === user.uid && (
                             <button onClick={() => handleDeleteComment(c.comment_id)} style={{
                               marginLeft: 'auto', background: 'none', border: 'none',
-                              color: '#64748B', fontSize: '12px', cursor: 'pointer',
+                              color: 'var(--text-muted)', fontSize: '12px', cursor: 'pointer',
                             }}>Delete</button>
                           )}
                         </div>
-                        <p style={{ fontSize: '14px', color: '#94A3B8', margin: '4px 0 0', lineHeight: 1.6, wordBreak: 'break-word' }}>
+                        <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: '4px 0 0', lineHeight: 1.6, wordBreak: 'break-word' }}>
                           {c.text}
                         </p>
                       </div>
@@ -293,8 +293,8 @@ export default function PostDetail() {
 function DetailItem({ icon, label, value }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-      <span style={{ fontSize: '10px', color: '#475569', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600 }}>{icon} {label}</span>
-      <span style={{ fontSize: '13px', color: '#E2E8F0', fontWeight: 500 }}>{value}</span>
+      <span style={{ fontSize: '10px', color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600 }}>{icon} {label}</span>
+      <span style={{ fontSize: '13px', color: 'var(--text-primary)', fontWeight: 500 }}>{value}</span>
     </div>
   );
 }

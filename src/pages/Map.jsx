@@ -72,7 +72,7 @@ export default function MapPage() {
     const base = 'https://nominatim.openstreetmap.org/search';
     const params = `q=${encodeURIComponent(query)}&format=json&polygon_geojson=1&polygon_threshold=0.002&limit=5${extraParams}`;
     const res = await fetch(`${base}?${params}`, {
-      headers: { 'User-Agent': 'TrustHut/1.0', 'Accept-Language': 'en' },
+      headers: { 'User-Agent': 'SafeSteps/1.0', 'Accept-Language': 'en' },
     });
     return res.json();
   }
@@ -149,23 +149,23 @@ export default function MapPage() {
     setCitySearch('');
   };
 
-  const riskStyle = (level) => RISK_COLORS[level] || { bg: 'rgba(100,116,139,0.12)', color: '#94A3B8' };
+  const riskStyle = (level) => RISK_COLORS[level] || { bg: 'rgba(100,116,139,0.12)', color: 'var(--text-secondary)' };
 
   return (
-    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: '#060B14', paddingTop: '64px' }}>
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg-base)', paddingTop: '64px' }}>
       {/* ─── TOOLBAR ─── */}
       <div style={{
         padding: '0 20px', height: '52px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        borderBottom: '1px solid #1A2640', background: 'rgba(6,11,20,0.95)', backdropFilter: 'blur(16px)',
+        borderBottom: '1px solid var(--border)', background: 'var(--bg-card)', backdropFilter: 'blur(16px)',
         gap: '12px', flexWrap: 'wrap',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <svg width="16" height="16" fill="none" stroke="#3B82F6" viewBox="0 0 24 24" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0020 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
           </svg>
-          <span style={{ fontSize: '14px', fontWeight: 600, color: 'white' }}>Accessibility Map</span>
+          <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>Accessibility Map</span>
           <span style={{
-            fontSize: '10px', color: '#64748B', background: 'rgba(255,255,255,0.04)',
+            fontSize: '10px', color: 'var(--text-muted)', background: 'var(--nav-pill-bg)',
             padding: '2px 8px', borderRadius: '999px', fontWeight: 500,
           }}>{displayPosts.length}</span>
         </div>
@@ -178,11 +178,11 @@ export default function MapPage() {
             placeholder="Search city (e.g. Hyderabad)"
             style={{
               padding: '6px 12px', fontSize: '12px', width: '180px',
-              background: '#020617', border: '1px solid #1E293B', borderRadius: '8px',
-              color: '#E2E8F0', outline: 'none', fontFamily: 'inherit',
+              background: 'var(--bg-input)', border: '1px solid var(--border)', borderRadius: '8px',
+              color: 'var(--text-primary)', outline: 'none', fontFamily: 'inherit',
             }}
             onFocus={e => e.target.style.borderColor = 'rgba(37,99,235,0.5)'}
-            onBlur={e => e.target.style.borderColor = '#1E293B'}
+            onBlur={e => e.target.style.borderColor = 'var(--border)'}
           />
           <button type="submit" disabled={searching} style={{
             padding: '6px 12px', borderRadius: '8px', fontSize: '11px', fontWeight: 600,
@@ -191,23 +191,23 @@ export default function MapPage() {
           {cityName && (
             <button type="button" onClick={clearCity} style={{
               padding: '6px 10px', borderRadius: '8px', fontSize: '11px',
-              background: 'rgba(255,255,255,0.04)', border: '1px solid #1E293B',
-              color: '#94A3B8', cursor: 'pointer',
+              background: 'var(--nav-pill-bg)', border: '1px solid var(--border)',
+              color: 'var(--text-secondary)', cursor: 'pointer',
             }}>Clear</button>
           )}
         </form>
 
         {/* Risk filters */}
         <div style={{
-          display: 'flex', gap: '4px', background: 'rgba(255,255,255,0.03)',
-          borderRadius: '999px', padding: '4px', border: '1px solid #1A2640',
+          display: 'flex', gap: '4px', background: 'var(--bg-card-hover)',
+          borderRadius: '999px', padding: '4px', border: '1px solid var(--border)',
         }}>
           {FILTERS.map(f => (
             <button key={f.key} onClick={() => setFilter(f.key)} style={{
               padding: '5px 14px', borderRadius: '999px', fontSize: '11px', fontWeight: 500,
               cursor: 'pointer', border: 'none', transition: 'all 0.2s ease',
               background: filter === f.key ? '#2563EB' : 'transparent',
-              color: filter === f.key ? 'white' : '#64748B',
+              color: filter === f.key ? 'white' : 'var(--text-muted)',
               boxShadow: filter === f.key ? '0 4px 12px rgba(37,99,235,0.3)' : 'none',
               fontFamily: 'inherit',
             }}>
@@ -224,8 +224,8 @@ export default function MapPage() {
           display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px',
         }}>
           <span style={{ color: '#F87171', fontWeight: 600 }}>📍 Highlighted:</span>
-          <span style={{ color: '#CBD5E1' }}>{cityName}</span>
-          <span style={{ color: '#64748B' }}>— {displayPosts.length} report(s) in this area</span>
+          <span style={{ color: 'var(--text-primary)' }}>{cityName}</span>
+          <span style={{ color: 'var(--text-muted)' }}>— {displayPosts.length} report(s) in this area</span>
         </div>
       )}
 
@@ -252,7 +252,7 @@ export default function MapPage() {
         {selectedPost && (
           <div ref={panelRef} style={{
             width: '380px', height: '100%', overflow: 'hidden',
-            background: '#0C1322', borderLeft: '1px solid #1A2640',
+            background: 'var(--bg-card)', borderLeft: '1px solid var(--border)',
             display: 'flex', flexDirection: 'column',
             animation: 'slideInRight 0.25s ease-out',
             flexShrink: 0,
@@ -260,12 +260,12 @@ export default function MapPage() {
             {/* Panel Header */}
             <div style={{
               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-              padding: '16px 20px', borderBottom: '1px solid #1A2640',
+              padding: '16px 20px', borderBottom: '1px solid var(--border)',
             }}>
-              <h3 style={{ margin: 0, fontSize: '14px', fontWeight: 700, color: 'white' }}>Report Details</h3>
+              <h3 style={{ margin: 0, fontSize: '14px', fontWeight: 700, color: 'var(--text-primary)' }}>Report Details</h3>
               <button onClick={() => setSelectedPost(null)} style={{
-                background: 'rgba(255,255,255,0.05)', border: 'none', borderRadius: '8px',
-                width: '30px', height: '30px', cursor: 'pointer', color: '#94A3B8',
+                background: 'var(--nav-pill-bg)', border: 'none', borderRadius: '8px',
+                width: '30px', height: '30px', cursor: 'pointer', color: 'var(--text-secondary)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -278,7 +278,7 @@ export default function MapPage() {
             <div style={{ flex: 1, overflowY: 'auto', padding: '0' }}>
               {/* Media */}
               {selectedPost.media_url && (
-                <div style={{ width: '100%', aspectRatio: '16/10', background: '#080E1A' }}>
+                <div style={{ width: '100%', aspectRatio: '16/10', background: 'var(--bg-base)' }}>
                   {selectedPost.media_type === 'video' ? (
                     <video src={selectedPost.media_url} controls playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   ) : (
@@ -289,7 +289,7 @@ export default function MapPage() {
 
               <div style={{ padding: '20px' }}>
                 {/* Title */}
-                <h2 style={{ margin: '0 0 12px', fontSize: '18px', fontWeight: 700, color: 'white', lineHeight: 1.3 }}>
+                <h2 style={{ margin: '0 0 12px', fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.3 }}>
                   {selectedPost.title}
                 </h2>
 
@@ -307,7 +307,7 @@ export default function MapPage() {
                 </div>
 
                 {/* Description */}
-                <p style={{ fontSize: '13px', color: '#94A3B8', lineHeight: 1.7, margin: '0 0 20px' }}>
+                <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.7, margin: '0 0 20px' }}>
                   {selectedPost.description || 'No description provided.'}
                 </p>
 
@@ -315,27 +315,27 @@ export default function MapPage() {
                 <div style={{
                   display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px',
                   padding: '16px', borderRadius: '12px',
-                  background: 'rgba(255,255,255,0.02)', border: '1px solid #1A2640',
+                  background: 'var(--bg-card-hover)', border: '1px solid var(--border)',
                 }}>
                   <div>
-                    <p style={{ margin: 0, fontSize: '10px', color: '#475569', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Location</p>
-                    <p style={{ margin: '4px 0 0', fontSize: '13px', color: '#CBD5E1' }}>{selectedPost.location_name || '—'}</p>
+                    <p style={{ margin: 0, fontSize: '10px', color: 'var(--text-dim)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Location</p>
+                    <p style={{ margin: '4px 0 0', fontSize: '13px', color: 'var(--text-primary)' }}>{selectedPost.location_name || '—'}</p>
                   </div>
                   <div>
-                    <p style={{ margin: 0, fontSize: '10px', color: '#475569', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Author</p>
-                    <p style={{ margin: '4px 0 0', fontSize: '13px', color: '#CBD5E1' }}>{selectedPost.user_name || 'Anonymous'}</p>
+                    <p style={{ margin: 0, fontSize: '10px', color: 'var(--text-dim)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Author</p>
+                    <p style={{ margin: '4px 0 0', fontSize: '13px', color: 'var(--text-primary)' }}>{selectedPost.user_name || 'Anonymous'}</p>
                   </div>
                   <div>
-                    <p style={{ margin: 0, fontSize: '10px', color: '#475569', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Latitude</p>
-                    <p style={{ margin: '4px 0 0', fontSize: '13px', color: '#CBD5E1', fontFamily: 'monospace' }}>{selectedPost.latitude?.toFixed(6)}</p>
+                    <p style={{ margin: 0, fontSize: '10px', color: 'var(--text-dim)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Latitude</p>
+                    <p style={{ margin: '4px 0 0', fontSize: '13px', color: 'var(--text-primary)', fontFamily: 'monospace' }}>{selectedPost.latitude?.toFixed(6)}</p>
                   </div>
                   <div>
-                    <p style={{ margin: 0, fontSize: '10px', color: '#475569', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Longitude</p>
-                    <p style={{ margin: '4px 0 0', fontSize: '13px', color: '#CBD5E1', fontFamily: 'monospace' }}>{selectedPost.longitude?.toFixed(6)}</p>
+                    <p style={{ margin: 0, fontSize: '10px', color: 'var(--text-dim)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Longitude</p>
+                    <p style={{ margin: '4px 0 0', fontSize: '13px', color: 'var(--text-primary)', fontFamily: 'monospace' }}>{selectedPost.longitude?.toFixed(6)}</p>
                   </div>
                   <div style={{ gridColumn: 'span 2' }}>
-                    <p style={{ margin: 0, fontSize: '10px', color: '#475569', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Posted</p>
-                    <p style={{ margin: '4px 0 0', fontSize: '13px', color: '#CBD5E1' }}>
+                    <p style={{ margin: 0, fontSize: '10px', color: 'var(--text-dim)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Posted</p>
+                    <p style={{ margin: '4px 0 0', fontSize: '13px', color: 'var(--text-primary)' }}>
                       {selectedPost.created_at ? new Date(selectedPost.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '—'}
                     </p>
                   </div>

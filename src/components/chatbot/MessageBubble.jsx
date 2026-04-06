@@ -47,7 +47,7 @@ function parseInline(text) {
     m = rest.match(/^(.*?)\*(.+?)\*(.*)/s);
     if (m) { if (m[1]) parts.push(<span key={k++}>{m[1]}</span>); parts.push(<em key={k++}>{m[2]}</em>); rest = m[3]; continue; }
     m = rest.match(/^(.*?)`(.+?)`(.*)/s);
-    if (m) { if (m[1]) parts.push(<span key={k++}>{m[1]}</span>); parts.push(<code key={k++} style={{ background: 'rgba(255,255,255,0.08)', padding: '1px 4px', borderRadius: '3px', fontSize: '0.88em' }}>{m[2]}</code>); rest = m[3]; continue; }
+    if (m) { if (m[1]) parts.push(<span key={k++}>{m[1]}</span>); parts.push(<code key={k++} style={{ background: 'var(--nav-pill-border)', padding: '1px 4px', borderRadius: '3px', fontSize: '0.88em' }}>{m[2]}</code>); rest = m[3]; continue; }
     parts.push(<span key={k++}>{rest}</span>); break;
   }
   return parts;
@@ -69,9 +69,9 @@ export default function MessageBubble({ role, text }) {
       <div style={{
         maxWidth: '85%', padding: '10px 14px', fontSize: '12.5px', lineHeight: 1.65,
         borderRadius: isUser ? '14px 14px 4px 14px' : '14px 14px 14px 4px',
-        background: isUser ? '#2563EB' : '#1E293B',
-        color: isUser ? 'white' : '#CBD5E1',
-        border: isUser ? 'none' : '1px solid rgba(255,255,255,0.06)',
+        background: isUser ? '#2563EB' : 'var(--border)',
+        color: isUser ? 'white' : 'var(--text-primary)',
+        border: isUser ? 'none' : '1px solid var(--nav-border)',
       }}>
         {rendered}
       </div>

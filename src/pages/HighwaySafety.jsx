@@ -172,14 +172,18 @@ const RISK_CATEGORIES = [
 
 const RISK_COLORS = { unsafe: '#EF4444', moderate: '#F59E0B', safe: '#10B981' };
 
-const MAP_DARK_STYLE = [
-  { elementType: 'geometry',           stylers: [{ color: '#0C1322' }] },
-  { elementType: 'labels.text.stroke', stylers: [{ color: '#0C1322' }] },
-  { elementType: 'labels.text.fill',   stylers: [{ color: '#64748B' }] },
-  { featureType: 'road', elementType: 'geometry',        stylers: [{ color: '#1A2640' }] },
-  { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#0a1628' }] },
-  { featureType: 'water', elementType: 'geometry',       stylers: [{ color: '#0a1628' }] },
+const MAP_LIGHT_STYLE = [
+  { elementType: 'geometry',           stylers: [{ color: '#f5f5f5' }] },
+  { elementType: 'labels.text.stroke', stylers: [{ color: '#ffffff' }] },
+  { elementType: 'labels.text.fill',   stylers: [{ color: '#616161' }] },
+  { featureType: 'road', elementType: 'geometry',        stylers: [{ color: '#ffffff' }] },
+  { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#e0e0e0' }] },
+  { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#dadada' }] },
+  { featureType: 'water', elementType: 'geometry',       stylers: [{ color: '#c9d6e3' }] },
+  { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#9e9e9e' }] },
   { featureType: 'poi',                stylers: [{ visibility: 'off' }] },
+  { featureType: 'transit', elementType: 'geometry', stylers: [{ color: '#e5e5e5' }] },
+  { featureType: 'administrative', elementType: 'geometry.stroke', stylers: [{ color: '#c0c0c0' }] },
 ];
 
 const DEFAULT_CENTER = { lat: 17.385, lng: 78.4867 };
@@ -256,7 +260,7 @@ export default function HighwaySafety() {
     infoWindowRef.current = iw;
 
     filtered.forEach(risk => {
-      const color = RISK_COLORS[risk.risk_level] || '#64748B';
+      const color = RISK_COLORS[risk.risk_level] || 'var(--text-muted)';
       const catInfo = RISK_CATEGORIES.find(c => c.key === risk.risk_category);
       const isHighlighted = !!(selectedHighway && risk.route_name === selectedHighway);
 
@@ -280,7 +284,7 @@ export default function HighwaySafety() {
         setSelectedRisk(risk);
         iw.setContent(`
           <div style="max-width:260px;font-family:Inter,sans-serif;padding:4px;">
-            <h4 style="margin:0 0 5px;font-size:13px;font-weight:700;color:#1E293B">${risk.title}</h4>
+            <h4 style="margin:0 0 5px;font-size:13px;font-weight:700;color:var(--border)">${risk.title}</h4>
             <p style="margin:0 0 8px;font-size:11px;color:#64748B">📍 ${risk.location_name || ''}</p>
             <span style="display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:700;color:white;background:${color}">
               ${risk.risk_level?.toUpperCase() || 'UNKNOWN'}
@@ -417,7 +421,7 @@ export default function HighwaySafety() {
   const onMapLoad = useCallback((map) => { mapRef.current = map; }, []);
 
   if (!isLoaded) return (
-    <div style={{ minHeight: '100vh', background: '#060B14', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-base)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div className="spinner" />
     </div>
   );
@@ -427,27 +431,27 @@ export default function HighwaySafety() {
     : 0;
 
   return (
-    <div style={{ paddingTop: '64px', background: '#060B14', minHeight: '100vh' }}>
+    <div style={{ paddingTop: '64px', background: 'var(--bg-base)', minHeight: '100vh' }}>
 
       {/* ── Top Control Bar ── */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 20px',
-        background: 'rgba(6,11,20,0.97)', borderBottom: '1px solid #1A2640',
+        background: 'var(--bg-card)', borderBottom: '1px solid var(--border)',
         flexWrap: 'wrap', position: 'sticky', top: '64px', zIndex: 20,
       }}>
 
         {/* Highway Dropdown */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-          <span style={{ fontSize: '12px', fontWeight: 700, color: '#64748B', whiteSpace: 'nowrap' }}>🛣️ Route:</span>
+          <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>🛣️ Route:</span>
           <div style={{ position: 'relative' }}>
             <select
               value={selectedHighway}
               onChange={e => { setSelectedHighway(e.target.value); setSelectedRisk(null); }}
               style={{
                 padding: '7px 34px 7px 12px', borderRadius: '10px', fontSize: '13px', fontWeight: 600,
-                background: selectedHighway ? 'rgba(59,130,246,0.15)' : '#0C1322',
-                border: `1px solid ${selectedHighway ? 'rgba(59,130,246,0.5)' : '#1A2640'}`,
-                color: selectedHighway ? '#60A5FA' : '#CBD5E1',
+                background: selectedHighway ? 'rgba(59,130,246,0.15)' : 'var(--bg-card)',
+                border: `1px solid ${selectedHighway ? 'rgba(59,130,246,0.5)' : 'var(--border)'}`,
+                color: selectedHighway ? '#60A5FA' : 'var(--text-primary)',
                 cursor: 'pointer', outline: 'none', appearance: 'none', minWidth: '190px',
                 transition: 'all 0.2s',
               }}
@@ -456,7 +460,7 @@ export default function HighwaySafety() {
               {highwayOptions.map(h => <option key={h} value={h}>{h}</option>)}
             </select>
             <svg style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}
-              width="11" height="11" fill="none" stroke="#64748B" viewBox="0 0 24 24" strokeWidth={2.5}>
+              width="11" height="11" fill="none" stroke="var(--text-muted)" viewBox="0 0 24 24" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
             </svg>
           </div>
@@ -469,7 +473,7 @@ export default function HighwaySafety() {
               background: routeLoading ? 'rgba(100,116,139,0.15)' : 'rgba(239,68,68,0.12)',
               border: `1px solid ${routeLoading ? 'rgba(100,116,139,0.3)' : 'rgba(239,68,68,0.3)'}`,
               fontSize: '11px', fontWeight: 700,
-              color: routeLoading ? '#94A3B8' : '#F87171',
+              color: routeLoading ? 'var(--text-secondary)' : '#F87171',
               transition: 'all 0.3s',
             }}>
               {routeLoading ? '⏳ Drawing route…' : `⚠️ ${highwayRisksCount} hazard${highwayRisksCount !== 1 ? 's' : ''} on this route`}
@@ -479,19 +483,19 @@ export default function HighwaySafety() {
         </div>
 
         {/* Divider */}
-        <div style={{ width: '1px', height: '22px', background: '#1A2640', flexShrink: 0 }} />
+        <div style={{ width: '1px', height: '22px', background: 'var(--border)', flexShrink: 0 }} />
 
         {/* Category Filter Pills */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', overflowX: 'auto' }}>
-          <span style={{ fontSize: '12px', fontWeight: 600, color: '#64748B', whiteSpace: 'nowrap' }}>Filter:</span>
+          <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>Filter:</span>
           {RISK_CATEGORIES.map(cat => {
             const active = activeFilters.has(cat.key);
             return (
               <button key={cat.key} onClick={() => toggleFilter(cat.key)} style={{
                 padding: '5px 12px', borderRadius: '999px', fontSize: '11px', fontWeight: 600,
                 cursor: 'pointer', whiteSpace: 'nowrap', transition: 'all 0.2s', border: 'none',
-                background: active ? `${cat.color}25` : 'rgba(255,255,255,0.04)',
-                color: active ? cat.color : '#64748B',
+                background: active ? `${cat.color}25` : 'var(--nav-pill-bg)',
+                color: active ? cat.color : 'var(--text-muted)',
                 outline: active ? `1.5px solid ${cat.color}60` : '1.5px solid transparent',
               }}>
                 {cat.label}
@@ -501,7 +505,7 @@ export default function HighwaySafety() {
         </div>
 
         {/* Right: count */}
-        <div style={{ marginLeft: 'auto', fontSize: '11px', color: '#475569', whiteSpace: 'nowrap' }}>
+        <div style={{ marginLeft: 'auto', fontSize: '11px', color: 'var(--text-dim)', whiteSpace: 'nowrap' }}>
           {loading ? 'Loading…' : `${filtered.length} risk${filtered.length !== 1 ? 's' : ''} shown`}
         </div>
       </div>
@@ -517,7 +521,7 @@ export default function HighwaySafety() {
             zoom={12}
             onLoad={onMapLoad}
             options={{
-              styles: MAP_DARK_STYLE,
+              styles: MAP_LIGHT_STYLE,
               disableDefaultUI: false,
               zoomControl: true,
               streetViewControl: false,
@@ -549,16 +553,16 @@ export default function HighwaySafety() {
         {/* Detail panel */}
         {selectedRisk && (
           <div style={{
-            width: '340px', background: '#0C1322', borderLeft: '1px solid #1A2640',
+            width: '340px', background: 'var(--bg-card)', borderLeft: '1px solid var(--border)',
             overflowY: 'auto', padding: '20px', flexShrink: 0,
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
-              <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'white', lineHeight: 1.3 }}>
+              <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.3 }}>
                 {selectedRisk.title}
               </h3>
               <button onClick={() => setSelectedRisk(null)} style={{
-                background: 'rgba(255,255,255,0.06)', border: 'none', borderRadius: '7px',
-                width: '28px', height: '28px', color: '#64748B', cursor: 'pointer',
+                background: 'var(--nav-border)', border: 'none', borderRadius: '7px',
+                width: '28px', height: '28px', color: 'var(--text-muted)', cursor: 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginLeft: '8px',
               }}>✕</button>
             </div>
@@ -569,14 +573,14 @@ export default function HighwaySafety() {
               />
             )}
 
-            <p style={{ fontSize: '13px', color: '#94A3B8', lineHeight: 1.65, margin: '0 0 14px' }}>
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.65, margin: '0 0 14px' }}>
               {selectedRisk.description}
             </p>
 
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '12px' }}>
               <span style={{
                 padding: '4px 10px', borderRadius: '999px', fontSize: '11px', fontWeight: 700,
-                color: 'white', background: RISK_COLORS[selectedRisk.risk_level] || '#64748B',
+                color: 'white', background: RISK_COLORS[selectedRisk.risk_level] || 'var(--text-muted)',
               }}>
                 {selectedRisk.risk_level?.toUpperCase()}
               </span>
@@ -585,7 +589,7 @@ export default function HighwaySafety() {
                 return (
                   <span style={{
                     padding: '4px 10px', borderRadius: '999px', fontSize: '11px', fontWeight: 600,
-                    color: cat?.color || '#94A3B8', background: 'rgba(255,255,255,0.06)',
+                    color: cat?.color || 'var(--text-secondary)', background: 'var(--nav-border)',
                   }}>
                     {cat?.label || selectedRisk.risk_category}
                   </span>
@@ -594,14 +598,14 @@ export default function HighwaySafety() {
             </div>
 
             {selectedRisk.route_name && (
-              <div style={{ fontSize: '12px', color: '#64748B', marginBottom: '6px' }}>
-                🛣️ Route: <span style={{ color: '#CBD5E1' }}>{selectedRisk.route_name}</span>
+              <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '6px' }}>
+                🛣️ Route: <span style={{ color: 'var(--text-primary)' }}>{selectedRisk.route_name}</span>
               </div>
             )}
-            <div style={{ fontSize: '12px', color: '#64748B', marginBottom: '4px' }}>
+            <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>
               📍 {selectedRisk.location_name}
             </div>
-            <div style={{ fontSize: '11px', color: '#475569', marginTop: '6px' }}>
+            <div style={{ fontSize: '11px', color: 'var(--text-dim)', marginTop: '6px' }}>
               Reported by {selectedRisk.user_name} · {new Date(selectedRisk.created_at).toLocaleDateString()}
             </div>
           </div>
@@ -612,18 +616,18 @@ export default function HighwaySafety() {
       <div style={{
         position: 'fixed', bottom: '24px', left: '24px', zIndex: 10,
         display: 'flex', gap: '12px', padding: '10px 16px', borderRadius: '12px',
-        background: 'rgba(12,19,34,0.95)', border: '1px solid #1A2640',
+        background: 'rgba(12,19,34,0.95)', border: '1px solid var(--border)',
         backdropFilter: 'blur(12px)', flexWrap: 'wrap',
       }}>
         {[{ label: 'High Risk', color: '#EF4444' }, { label: 'Medium', color: '#F59E0B' }, { label: 'Safe', color: '#10B981' }].map(l => (
           <div key={l.label} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: l.color, flexShrink: 0 }} />
-            <span style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 500 }}>{l.label}</span>
+            <span style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 500 }}>{l.label}</span>
           </div>
         ))}
         {selectedHighway && (
           <>
-            <div style={{ width: '1px', background: '#1A2640' }} />
+            <div style={{ width: '1px', background: 'var(--border)' }} />
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <span style={{ width: '22px', height: '5px', borderRadius: '3px', background: '#3B82F6', flexShrink: 0 }} />
               <span style={{ fontSize: '11px', color: '#60A5FA', fontWeight: 600 }}>Route path</span>

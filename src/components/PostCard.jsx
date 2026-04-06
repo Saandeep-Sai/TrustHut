@@ -57,7 +57,7 @@ export default function PostCard({ post: initialPost, onDelete, onUpdate }) {
 
   const risk = RISK_CONFIG[post.risk_level?.toLowerCase()] || {
     bg: 'rgba(100,116,139,0.12)', border: 'rgba(100,116,139,0.25)',
-    color: '#94A3B8', dot: '#64748B', label: 'Unknown',
+    color: 'var(--text-secondary)', dot: 'var(--text-muted)', label: 'Unknown',
   };
 
   const handleLike = async (e) => {
@@ -141,7 +141,7 @@ export default function PostCard({ post: initialPost, onDelete, onUpdate }) {
   return (
     <>
       <div style={{
-        background: '#0C1322', border: '1px solid #1A2640', borderRadius: '16px',
+        background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '16px',
         overflow: 'hidden', display: 'flex', flexDirection: 'column',
       }}>
 
@@ -151,17 +151,17 @@ export default function PostCard({ post: initialPost, onDelete, onUpdate }) {
             width: '36px', height: '36px', borderRadius: '50%', flexShrink: 0,
             background: 'linear-gradient(135deg, #6366F1, #3B82F6)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: 'white', fontSize: '13px', fontWeight: 700,
+            color: 'var(--text-primary)', fontSize: '13px', fontWeight: 700,
           }}>{userName.charAt(0).toUpperCase()}</div>
 
           <div style={{ flex: 1, minWidth: 0 }}>
-            <p style={{ margin: 0, fontSize: '13px', fontWeight: 600, color: 'white', lineHeight: 1.2 }}>{userName}</p>
+            <p style={{ margin: 0, fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1.2 }}>{userName}</p>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px' }}>
-              <svg width="10" height="10" fill="none" stroke="#64748B" viewBox="0 0 24 24" strokeWidth={2}>
+              <svg width="10" height="10" fill="none" stroke="var(--text-muted)" viewBox="0 0 24 24" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
               </svg>
-              <span style={{ fontSize: '11px', color: '#64748B', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              <span style={{ fontSize: '11px', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                 {post.location_name}
               </span>
             </div>
@@ -182,21 +182,21 @@ export default function PostCard({ post: initialPost, onDelete, onUpdate }) {
             <div ref={menuRef} style={{ position: 'relative' }}>
               <button onClick={() => setMenuOpen(!menuOpen)} style={{
                 background: 'none', border: 'none', cursor: 'pointer', padding: '4px 6px',
-                color: '#64748B', fontSize: '18px', fontWeight: 700, lineHeight: 1,
+                color: 'var(--text-muted)', fontSize: '18px', fontWeight: 700, lineHeight: 1,
               }}>⋯</button>
               {menuOpen && (
                 <div style={{
                   position: 'absolute', top: '100%', right: 0, zIndex: 100,
-                  background: '#0F172A', border: '1px solid #1E293B', borderRadius: '10px',
-                  boxShadow: '0 8px 24px rgba(0,0,0,0.4)', minWidth: '130px', overflow: 'hidden',
+                  background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '10px',
+                  boxShadow: '0 8px 24px var(--shadow-card)', minWidth: '130px', overflow: 'hidden',
                 }}>
                   <button onClick={() => { setMenuOpen(false); setEditing(true); }} style={{
                     display: 'flex', alignItems: 'center', gap: '8px', width: '100%',
                     padding: '10px 14px', background: 'none', border: 'none',
-                    color: '#CBD5E1', fontSize: '12px', fontWeight: 500, cursor: 'pointer',
-                    textAlign: 'left', borderBottom: '1px solid #1E293B',
+                    color: 'var(--text-primary)', fontSize: '12px', fontWeight: 500, cursor: 'pointer',
+                    textAlign: 'left', borderBottom: '1px solid var(--border)',
                   }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
+                    onMouseEnter={e => e.currentTarget.style.background = 'var(--nav-pill-bg)'}
                     onMouseLeave={e => e.currentTarget.style.background = 'none'}>
                     <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -223,7 +223,7 @@ export default function PostCard({ post: initialPost, onDelete, onUpdate }) {
         </div>
 
         {/* ─── MEDIA ─── */}
-        <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3', background: '#080E1A', overflow: 'hidden' }}>
+        <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3', background: 'var(--bg-base)', overflow: 'hidden' }}>
           {isVideo && hasMedia ? (
             <video src={mediaSrc} controls playsInline muted style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           ) : (
@@ -233,7 +233,7 @@ export default function PostCard({ post: initialPost, onDelete, onUpdate }) {
             position: 'absolute', bottom: '10px', left: '10px',
             display: 'flex', alignItems: 'center', gap: '5px',
             padding: '5px 10px', borderRadius: '999px',
-            background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(8px)',
+            background: 'var(--modal-overlay)', backdropFilter: 'blur(8px)',
             color: 'white', fontSize: '11px', fontWeight: 500,
           }}>
             {TYPE_EMOJI[post.accessibility_type] || '📍'} {TYPE_LABEL[post.accessibility_type] || 'Accessibility'}
@@ -257,7 +257,7 @@ export default function PostCard({ post: initialPost, onDelete, onUpdate }) {
           <button onClick={handleLike} style={{
             display: 'flex', alignItems: 'center', gap: '6px',
             background: 'none', border: 'none', cursor: 'pointer', padding: 0,
-            color: liked ? '#F43F5E' : '#94A3B8', transition: 'color 0.15s ease',
+            color: liked ? '#F43F5E' : 'var(--text-secondary)', transition: 'color 0.15s ease',
           }}>
             <svg width="20" height="20" fill={liked ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.8}
               style={{ transform: liked ? 'scale(1.15)' : 'scale(1)', transition: 'transform 0.2s ease' }}>
@@ -268,7 +268,7 @@ export default function PostCard({ post: initialPost, onDelete, onUpdate }) {
           <button onClick={toggleComments} style={{
             display: 'flex', alignItems: 'center', gap: '6px',
             background: 'none', border: 'none', cursor: 'pointer', padding: 0,
-            color: commentsOpen ? '#3B82F6' : '#94A3B8', transition: 'color 0.15s',
+            color: commentsOpen ? '#3B82F6' : 'var(--text-secondary)', transition: 'color 0.15s',
           }}>
             <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.8}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 01-.923 1.785A5.969 5.969 0 006 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337z" />
@@ -278,7 +278,7 @@ export default function PostCard({ post: initialPost, onDelete, onUpdate }) {
           <div style={{ position: 'relative' }}>
             <button onClick={handleShare} style={{
               display: 'flex', alignItems: 'center', gap: '6px',
-              background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: '#94A3B8',
+              background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: 'var(--text-secondary)',
             }}>
               <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.8}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
@@ -293,20 +293,20 @@ export default function PostCard({ post: initialPost, onDelete, onUpdate }) {
               }}>Link copied!</div>
             )}
           </div>
-          <span style={{ marginLeft: 'auto', fontSize: '11px', color: '#475569' }}>{timeAgo(post.created_at)}</span>
+          <span style={{ marginLeft: 'auto', fontSize: '11px', color: 'var(--text-dim)' }}>{timeAgo(post.created_at)}</span>
         </div>
 
         {/* ─── CAPTION ─── */}
         <div style={{ padding: '0 16px 14px' }}>
-          <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#F1F5F9', margin: '0 0 6px', lineHeight: 1.3 }}>{post.title}</h3>
+          <h3 style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 6px', lineHeight: 1.3 }}>{post.title}</h3>
           <p style={{
-            fontSize: '13px', color: '#94A3B8', lineHeight: 1.6, margin: 0,
+            fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0,
             ...(showReadMore ? { display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } : {}),
           }}>{desc}</p>
           {showReadMore && (
             <button onClick={() => setExpanded(true)} style={{
               background: 'none', border: 'none', padding: 0, cursor: 'pointer',
-              color: '#64748B', fontSize: '13px', marginTop: '2px',
+              color: 'var(--text-muted)', fontSize: '13px', marginTop: '2px',
             }}>... more</button>
           )}
           <button onClick={() => navigate(`/post/${post.post_id}`)} style={{
@@ -317,13 +317,13 @@ export default function PostCard({ post: initialPost, onDelete, onUpdate }) {
 
         {/* ─── COMMENTS SECTION ─── */}
         {commentsOpen && (
-          <div style={{ padding: '0 16px 14px', borderTop: '1px solid #1A2640' }}>
+          <div style={{ padding: '0 16px 14px', borderTop: '1px solid var(--border)' }}>
             {loadingComments ? (
-              <p style={{ fontSize: '12px', color: '#64748B', padding: '10px 0' }}>Loading comments...</p>
+              <p style={{ fontSize: '12px', color: 'var(--text-muted)', padding: '10px 0' }}>Loading comments...</p>
             ) : (
               <>
                 {comments.length === 0 && (
-                  <p style={{ fontSize: '12px', color: '#475569', padding: '10px 0', margin: 0 }}>No comments yet.</p>
+                  <p style={{ fontSize: '12px', color: 'var(--text-dim)', padding: '10px 0', margin: 0 }}>No comments yet.</p>
                 )}
                 <div style={{ maxHeight: '200px', overflowY: 'auto', marginTop: '10px' }}>
                   {comments.map(c => (
@@ -338,16 +338,16 @@ export default function PostCard({ post: initialPost, onDelete, onUpdate }) {
                       }}>{(c.user_name || 'U').charAt(0).toUpperCase()}</div>
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <span style={{ fontSize: '12px', fontWeight: 600, color: '#CBD5E1' }}>{c.user_name}</span>
-                          <span style={{ fontSize: '10px', color: '#475569' }}>{timeAgo(c.created_at)}</span>
+                          <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>{c.user_name}</span>
+                          <span style={{ fontSize: '10px', color: 'var(--text-dim)' }}>{timeAgo(c.created_at)}</span>
                           {user && c.user_id === user.uid && (
                             <button onClick={() => handleDeleteComment(c.comment_id)} style={{
                               marginLeft: 'auto', background: 'none', border: 'none',
-                              color: '#64748B', fontSize: '10px', cursor: 'pointer',
+                              color: 'var(--text-muted)', fontSize: '10px', cursor: 'pointer',
                             }}>✕</button>
                           )}
                         </div>
-                        <p style={{ fontSize: '12px', color: '#94A3B8', margin: '2px 0 0', lineHeight: 1.5, wordBreak: 'break-word' }}>{c.text}</p>
+                        <p style={{ fontSize: '12px', color: 'var(--text-secondary)', margin: '2px 0 0', lineHeight: 1.5, wordBreak: 'break-word' }}>{c.text}</p>
                       </div>
                     </div>
                   ))}
@@ -360,13 +360,13 @@ export default function PostCard({ post: initialPost, onDelete, onUpdate }) {
                       placeholder="Add a comment..." maxLength={1000}
                       style={{
                         flex: 1, padding: '8px 12px', borderRadius: '8px', fontSize: '12px',
-                        background: '#111827', border: '1px solid #1E293B', color: 'white', outline: 'none',
+                        background: 'var(--bg-input)', border: '1px solid var(--border)', color: 'var(--text-primary)', outline: 'none',
                       }}
                     />
                     <button onClick={handleAddComment} disabled={!commentText.trim()} style={{
                       padding: '8px 14px', borderRadius: '8px', fontSize: '12px', fontWeight: 600,
                       border: 'none', cursor: commentText.trim() ? 'pointer' : 'not-allowed',
-                      background: commentText.trim() ? '#2563EB' : '#1E293B', color: 'white',
+                      background: commentText.trim() ? '#2563EB' : 'var(--border)', color: 'white',
                     }}>Post</button>
                   </div>
                 )}

@@ -13,7 +13,7 @@ export default function ChatWindow({ messages, onSend, loading, onClose }) {
   return (
     <div style={{
       width: '340px', height: '480px', display: 'flex', flexDirection: 'column',
-      background: '#0F172A', border: '1px solid #1E293B', borderRadius: '16px',
+      background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '16px',
       boxShadow: '0 25px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03)',
       overflow: 'hidden',
       animation: 'chatSlideUp 0.25s ease-out',
@@ -21,7 +21,7 @@ export default function ChatWindow({ messages, onSend, loading, onClose }) {
       {/* ─── HEADER ─── */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: '10px',
-        padding: '14px 16px', borderBottom: '1px solid #1E293B',
+        padding: '14px 16px', borderBottom: '1px solid var(--border)',
         background: 'linear-gradient(180deg, rgba(37,99,235,0.08) 0%, transparent 100%)',
       }}>
         {/* Bot avatar */}
@@ -32,8 +32,8 @@ export default function ChatWindow({ messages, onSend, loading, onClose }) {
           boxShadow: '0 4px 12px rgba(37,99,235,0.35)', fontSize: '15px',
         }}>🤖</div>
         <div style={{ flex: 1 }}>
-          <p style={{ margin: 0, fontSize: '13px', fontWeight: 700, color: 'white' }}>TrustHut Assistant</p>
-          <p style={{ margin: 0, fontSize: '10.5px', color: '#64748B' }}>Accessibility Guide</p>
+          <p style={{ margin: 0, fontSize: '13px', fontWeight: 700, color: 'var(--text-primary)' }}>SafeSteps Assistant</p>
+          <p style={{ margin: 0, fontSize: '10.5px', color: 'var(--text-muted)' }}>Accessibility Guide</p>
         </div>
         {/* Online dot */}
         <span style={{
@@ -43,11 +43,11 @@ export default function ChatWindow({ messages, onSend, loading, onClose }) {
         {/* Close button */}
         <button onClick={onClose} style={{
           width: '28px', height: '28px', borderRadius: '8px', border: 'none', cursor: 'pointer',
-          background: 'rgba(255,255,255,0.05)', color: '#64748B', display: 'flex',
+          background: 'var(--nav-pill-bg)', color: 'var(--text-muted)', display: 'flex',
           alignItems: 'center', justifyContent: 'center', transition: 'all 0.15s',
         }}
-          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.color = '#E2E8F0'; }}
-          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = '#64748B'; }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'var(--nav-pill-border)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'var(--nav-pill-bg)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
         >
           <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -74,12 +74,12 @@ export default function ChatWindow({ messages, onSend, loading, onClose }) {
             }}>🤖</div>
             <div style={{
               display: 'flex', gap: '4px', padding: '10px 14px',
-              background: '#1E293B', borderRadius: '14px 14px 14px 4px',
-              border: '1px solid rgba(255,255,255,0.06)',
+              background: 'var(--border)', borderRadius: '14px 14px 14px 4px',
+              border: '1px solid var(--nav-border)',
             }}>
               {[0, 1, 2].map(i => (
                 <span key={i} style={{
-                  width: '6px', height: '6px', borderRadius: '50%', background: '#64748B',
+                  width: '6px', height: '6px', borderRadius: '50%', background: 'var(--text-muted)',
                   animation: `chatDotBounce 1.4s infinite ease-in-out`,
                   animationDelay: `${i * 0.16}s`,
                 }} />

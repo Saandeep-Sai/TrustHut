@@ -35,14 +35,14 @@ export default function Register() {
   };
 
   const fieldStyle = { display: 'flex', flexDirection: 'column', gap: '6px' };
-  const labelStyle = { fontSize: '12px', fontWeight: 500, color: '#94A3B8' };
+  const labelStyle = { fontSize: '12px', fontWeight: 500, color: 'var(--text-secondary)' };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#060B14', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '64px 24px 48px' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-base)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '64px 24px 48px' }}>
       <div style={{ width: '100%', maxWidth: '400px' }} className="fade-up">
         <div style={{
-          background: '#0C1322', border: '1px solid #1A2640', borderRadius: '20px',
-          padding: '36px', boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
+          background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '20px',
+          padding: '36px', boxShadow: '0 20px 60px var(--shadow-card)',
         }}>
           {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
@@ -56,8 +56,8 @@ export default function Register() {
                 <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.99 8.99a.75.75 0 1 1-1.06 1.061l-1.46-1.46v7.318A2.25 2.25 0 0 1 16.75 22h-3v-5a.75.75 0 0 0-.75-.75h-2A.75.75 0 0 0 10.25 17v5h-3a2.25 2.25 0 0 1-2.25-2.25v-7.318L3.53 13.89a.75.75 0 1 1-1.06-1.06l8.99-8.99Z" />
               </svg>
             </div>
-            <h2 style={{ fontSize: '22px', fontWeight: 700, color: 'white', margin: '0 0 6px' }}>Create Account</h2>
-            <p style={{ color: '#64748B', fontSize: '13px', margin: 0 }}>Join the TrustHut community</p>
+            <h2 style={{ fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 6px' }}>Create Account</h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '13px', margin: 0 }}>Join the SafeSteps community</p>
           </div>
 
           {error && (
@@ -104,7 +104,7 @@ export default function Register() {
             </button>
           </form>
 
-          <p style={{ marginTop: '24px', textAlign: 'center', color: '#475569', fontSize: '13px' }}>
+          <p style={{ marginTop: '24px', textAlign: 'center', color: 'var(--text-dim)', fontSize: '13px' }}>
             Already have an account?{' '}
             <Link to="/login" style={{ color: '#3B82F6', fontWeight: 600, textDecoration: 'none' }}>Sign In</Link>
           </p>

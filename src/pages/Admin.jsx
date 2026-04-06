@@ -7,21 +7,21 @@ const ADMIN_PASS = import.meta.env.VITE_ADMIN_PASSWORD || '';
 
 const INPUT_STYLE = {
   width: '100%', padding: '12px 16px', fontSize: '14px', boxSizing: 'border-box',
-  background: '#020617', border: '1px solid #1E293B', borderRadius: '12px',
-  color: '#E2E8F0', outline: 'none', fontFamily: 'inherit',
+  background: 'var(--bg-input)', border: '1px solid var(--border)', borderRadius: '12px',
+  color: 'var(--text-primary)', outline: 'none', fontFamily: 'inherit',
   transition: 'border-color 0.2s',
 };
 
 const TAB_STYLE = (active) => ({
   padding: '8px 20px', borderRadius: '10px', fontSize: '13px', fontWeight: 600,
   cursor: 'pointer', border: 'none', transition: 'all 0.2s',
-  background: active ? '#2563EB' : 'rgba(255,255,255,0.04)',
-  color: active ? 'white' : '#94A3B8',
+  background: active ? '#2563EB' : 'var(--nav-pill-bg)',
+  color: active ? 'white' : 'var(--text-secondary)',
   boxShadow: active ? '0 4px 14px rgba(37,99,235,0.3)' : 'none',
 });
 
-const CELL = { padding: '12px 16px', fontSize: '13px', color: '#CBD5E1', borderBottom: '1px solid #1A2640' };
-const HDR = { ...CELL, color: '#64748B', fontWeight: 600, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.08em' };
+const CELL = { padding: '12px 16px', fontSize: '13px', color: 'var(--text-primary)', borderBottom: '1px solid var(--border)' };
+const HDR = { ...CELL, color: 'var(--text-muted)', fontWeight: 600, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.08em' };
 
 function RiskBadge({ level }) {
   const cfg = {
@@ -55,12 +55,12 @@ function AdminLogin({ onLogin }) {
 
   return (
     <div style={{
-      minHeight: '100vh', background: '#060B14',
+      minHeight: '100vh', background: 'var(--bg-base)',
       display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px',
     }}>
       <div style={{
         width: '100%', maxWidth: '400px',
-        background: '#0C1322', border: '1px solid #1A2640', borderRadius: '20px',
+        background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '20px',
         padding: '40px 32px', boxShadow: '0 25px 50px rgba(0,0,0,0.3)',
       }}>
         {/* Lock Icon */}
@@ -75,10 +75,10 @@ function AdminLogin({ onLogin }) {
           </svg>
         </div>
 
-        <h2 style={{ textAlign: 'center', fontSize: '20px', fontWeight: 700, color: 'white', margin: '0 0 6px' }}>
+        <h2 style={{ textAlign: 'center', fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 6px' }}>
           Admin Access
         </h2>
-        <p style={{ textAlign: 'center', fontSize: '13px', color: '#64748B', margin: '0 0 28px' }}>
+        <p style={{ textAlign: 'center', fontSize: '13px', color: 'var(--text-muted)', margin: '0 0 28px' }}>
           Enter admin credentials to continue.
         </p>
 
@@ -92,17 +92,17 @@ function AdminLogin({ onLogin }) {
 
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: '14px' }}>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#94A3B8', marginBottom: '6px' }}>Username</label>
+            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px' }}>Username</label>
             <input value={username} onChange={e => setUsername(e.target.value)} placeholder="admin" style={INPUT_STYLE}
               onFocus={e => e.target.style.borderColor = 'rgba(37,99,235,0.5)'}
-              onBlur={e => e.target.style.borderColor = '#1E293B'}
+              onBlur={e => e.target.style.borderColor = 'var(--border)'}
             />
           </div>
           <div style={{ marginBottom: '24px' }}>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#94A3B8', marginBottom: '6px' }}>Password</label>
+            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px' }}>Password</label>
             <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" style={INPUT_STYLE}
               onFocus={e => e.target.style.borderColor = 'rgba(37,99,235,0.5)'}
-              onBlur={e => e.target.style.borderColor = '#1E293B'}
+              onBlur={e => e.target.style.borderColor = 'var(--border)'}
             />
           </div>
           <button type="submit" style={{
@@ -165,7 +165,7 @@ export default function Admin() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#060B14', paddingTop: '80px', paddingBottom: '64px' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-base)', paddingTop: '80px', paddingBottom: '64px' }}>
       <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 24px' }}>
 
         {/* Header */}
@@ -174,8 +174,8 @@ export default function Admin() {
             <p style={{ color: '#3B82F6', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 8px' }}>
               Administration
             </p>
-            <h1 style={{ fontSize: '28px', fontWeight: 800, color: 'white', margin: '0 0 6px' }}>Admin Dashboard</h1>
-            <p style={{ color: '#64748B', fontSize: '14px', margin: 0 }}>
+            <h1 style={{ fontSize: '28px', fontWeight: 800, color: 'var(--text-primary)', margin: '0 0 6px' }}>Admin Dashboard</h1>
+            <p style={{ color: 'var(--text-muted)', fontSize: '14px', margin: 0 }}>
               Manage users and posts across the platform.
             </p>
           </div>
@@ -199,11 +199,11 @@ export default function Admin() {
           ].map(s => (
             <div key={s.label} style={{
               flex: '1 1 200px', padding: '18px 20px', borderRadius: '14px',
-              background: '#0C1322', border: '1px solid #1A2640',
+              background: 'var(--bg-card)', border: '1px solid var(--border)',
             }}>
               <div style={{ fontSize: '20px', marginBottom: '4px' }}>{s.icon}</div>
-              <div style={{ fontSize: '24px', fontWeight: 800, color: 'white' }}>{s.value}</div>
-              <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>{s.label}</div>
+              <div style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-primary)' }}>{s.value}</div>
+              <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px' }}>{s.label}</div>
             </div>
           ))}
         </div>
@@ -216,7 +216,7 @@ export default function Admin() {
 
         {/* Content */}
         <div style={{
-          background: '#0C1322', border: '1px solid #1A2640', borderRadius: '16px',
+          background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '16px',
           overflow: 'hidden',
         }}>
           {loading ? (
@@ -227,7 +227,7 @@ export default function Admin() {
             <div style={{ overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
-                  <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
+                  <tr style={{ background: 'var(--bg-card-hover)' }}>
                     <th style={HDR}>#</th>
                     <th style={{ ...HDR, textAlign: 'left' }}>Name</th>
                     <th style={{ ...HDR, textAlign: 'left' }}>Email</th>
@@ -240,7 +240,7 @@ export default function Admin() {
                     <tr key={u.uid || i} style={{ transition: 'background 0.15s' }}
                       onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'}
                       onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
-                      <td style={{ ...CELL, color: '#475569', width: '50px' }}>{i + 1}</td>
+                      <td style={{ ...CELL, color: 'var(--text-dim)', width: '50px' }}>{i + 1}</td>
                       <td style={CELL}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                           <div style={{
@@ -252,9 +252,9 @@ export default function Admin() {
                           <span style={{ fontWeight: 500 }}>{u.name || 'Unnamed'}</span>
                         </div>
                       </td>
-                      <td style={{ ...CELL, color: '#94A3B8' }}>{u.email || '—'}</td>
-                      <td style={{ ...CELL, color: '#475569', fontSize: '11px', fontFamily: 'monospace' }}>{u.uid?.slice(0, 12)}...</td>
-                      <td style={{ ...CELL, color: '#94A3B8' }}>
+                      <td style={{ ...CELL, color: 'var(--text-secondary)' }}>{u.email || '—'}</td>
+                      <td style={{ ...CELL, color: 'var(--text-dim)', fontSize: '11px', fontFamily: 'monospace' }}>{u.uid?.slice(0, 12)}...</td>
+                      <td style={{ ...CELL, color: 'var(--text-secondary)' }}>
                         {u.created_at ? new Date(u.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}
                       </td>
                     </tr>
@@ -262,14 +262,14 @@ export default function Admin() {
                 </tbody>
               </table>
               {users.length === 0 && (
-                <div style={{ textAlign: 'center', padding: '60px 0', color: '#64748B', fontSize: '14px' }}>No users found.</div>
+                <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text-muted)', fontSize: '14px' }}>No users found.</div>
               )}
             </div>
           ) : (
             <div style={{ overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
-                  <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
+                  <tr style={{ background: 'var(--bg-card-hover)' }}>
                     <th style={HDR}>#</th>
                     <th style={{ ...HDR, textAlign: 'left' }}>Title</th>
                     <th style={{ ...HDR, textAlign: 'left' }}>Location</th>
@@ -285,13 +285,13 @@ export default function Admin() {
                     <tr key={p.post_id} style={{ transition: 'background 0.15s' }}
                       onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'}
                       onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
-                      <td style={{ ...CELL, color: '#475569', width: '50px' }}>{i + 1}</td>
+                      <td style={{ ...CELL, color: 'var(--text-dim)', width: '50px' }}>{i + 1}</td>
                       <td style={{ ...CELL, fontWeight: 500, maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.title}</td>
-                      <td style={{ ...CELL, color: '#94A3B8', maxWidth: '160px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.location_name || '—'}</td>
+                      <td style={{ ...CELL, color: 'var(--text-secondary)', maxWidth: '160px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.location_name || '—'}</td>
                       <td style={CELL}><RiskBadge level={p.risk_level} /></td>
-                      <td style={{ ...CELL, color: '#94A3B8' }}>{p.accessibility_type || '—'}</td>
-                      <td style={{ ...CELL, color: '#94A3B8' }}>{p.user_name || p.user_id?.slice(0, 8) || '—'}</td>
-                      <td style={{ ...CELL, color: '#94A3B8' }}>
+                      <td style={{ ...CELL, color: 'var(--text-secondary)' }}>{p.accessibility_type || '—'}</td>
+                      <td style={{ ...CELL, color: 'var(--text-secondary)' }}>{p.user_name || p.user_id?.slice(0, 8) || '—'}</td>
+                      <td style={{ ...CELL, color: 'var(--text-secondary)' }}>
                         {p.created_at ? new Date(p.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '—'}
                       </td>
                       <td style={{ ...CELL, textAlign: 'right' }}>
@@ -319,7 +319,7 @@ export default function Admin() {
                 </tbody>
               </table>
               {posts.length === 0 && (
-                <div style={{ textAlign: 'center', padding: '60px 0', color: '#64748B', fontSize: '14px' }}>No posts found.</div>
+                <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text-muted)', fontSize: '14px' }}>No posts found.</div>
               )}
             </div>
           )}

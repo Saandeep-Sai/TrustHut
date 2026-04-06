@@ -110,7 +110,7 @@ function parseInline(text) {
       if (match[1]) parts.push(<span key={key++}>{match[1]}</span>);
       parts.push(
         <code key={key++} style={{
-          background: 'rgba(255,255,255,0.08)', padding: '1px 5px',
+          background: 'var(--nav-pill-border)', padding: '1px 5px',
           borderRadius: '4px', fontSize: '0.9em', fontFamily: 'monospace',
         }}>{match[2]}</code>
       );
@@ -145,9 +145,9 @@ export default function MessageBubble({ role, text }) {
         maxWidth: '80%', padding: '12px 16px', fontSize: '13px',
         lineHeight: 1.7,
         borderRadius: isUser ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-        background: isUser ? '#6366F1' : '#111B2E',
-        color: isUser ? 'white' : '#CBD5E1',
-        border: isUser ? 'none' : '1px solid #1A2640',
+        background: isUser ? '#6366F1' : 'var(--bg-card-hover)',
+        color: isUser ? 'white' : 'var(--text-primary)',
+        border: isUser ? 'none' : '1px solid var(--border)',
       }}>
         {rendered}
       </div>

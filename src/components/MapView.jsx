@@ -10,17 +10,19 @@ const RISK_MARKER_COLORS = {
   unsafe: '#ef4444',
 };
 
-const DARK_MAP_STYLES = [
-  { elementType: 'geometry', stylers: [{ color: '#0d1117' }] },
-  { elementType: 'labels.text.stroke', stylers: [{ color: '#0d1117' }] },
-  { elementType: 'labels.text.fill', stylers: [{ color: '#6e7681' }] },
-  { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#161b22' }] },
-  { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#21262d' }] },
-  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#0d1117' }] },
-  { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#3d4954' }] },
-  { featureType: 'poi', elementType: 'geometry', stylers: [{ color: '#161b22' }] },
-  { featureType: 'poi', elementType: 'labels.text.fill', stylers: [{ color: '#6e7681' }] },
-  { featureType: 'transit', elementType: 'geometry', stylers: [{ color: '#161b22' }] },
+const LIGHT_MAP_STYLES = [
+  { elementType: 'geometry', stylers: [{ color: '#f5f5f5' }] },
+  { elementType: 'labels.text.stroke', stylers: [{ color: '#ffffff' }] },
+  { elementType: 'labels.text.fill', stylers: [{ color: '#616161' }] },
+  { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#ffffff' }] },
+  { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#e0e0e0' }] },
+  { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#dadada' }] },
+  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#c9d6e3' }] },
+  { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#9e9e9e' }] },
+  { featureType: 'poi', elementType: 'geometry', stylers: [{ color: '#eeeeee' }] },
+  { featureType: 'poi', elementType: 'labels.text.fill', stylers: [{ color: '#757575' }] },
+  { featureType: 'transit', elementType: 'geometry', stylers: [{ color: '#e5e5e5' }] },
+  { featureType: 'administrative', elementType: 'geometry.stroke', stylers: [{ color: '#c0c0c0' }] },
 ];
 
 const LIBRARIES = ['places', 'geocoding'];
@@ -94,15 +96,15 @@ export default function MapView({ posts = [], apiKey, onSelectPost, boundaryGeoJ
 
   if (loadError) {
     return (
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', background: '#060B14' }}>
-        <p style={{ color: '#64748B' }}>Failed to load Google Maps. Check your API key.</p>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', background: 'var(--bg-base)' }}>
+        <p style={{ color: 'var(--text-muted)' }}>Failed to load Google Maps. Check your API key.</p>
       </div>
     );
   }
 
   if (!isLoaded) {
     return (
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', background: '#060B14' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', background: 'var(--bg-base)' }}>
         <div className="spinner" />
       </div>
     );
@@ -119,7 +121,7 @@ export default function MapView({ posts = [], apiKey, onSelectPost, boundaryGeoJ
       center={center}
       onLoad={onLoad}
       options={{
-        styles: DARK_MAP_STYLES,
+        styles: LIGHT_MAP_STYLES,
         disableDefaultUI: false,
         zoomControl: true,
         mapTypeControl: false,

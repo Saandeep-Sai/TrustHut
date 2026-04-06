@@ -31,7 +31,7 @@ export default function PostGrid({ posts = [] }) {
   const clearSearch = () => { setSearchQuery(''); searchRef.current?.focus(); };
 
   return (
-    <section style={{ background: '#060B14', padding: '80px 0 96px' }}>
+    <section style={{ background: 'var(--bg-base)', padding: '80px 0 96px' }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 32px' }}>
 
         {/* ── Header row ── */}
@@ -43,10 +43,10 @@ export default function PostGrid({ posts = [] }) {
             <p style={{ color: '#3B82F6', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 10px 0' }}>
               Community Reports
             </p>
-            <h2 style={{ fontSize: '30px', fontWeight: 800, color: 'white', margin: '0 0 8px 0', letterSpacing: '-0.5px', lineHeight: 1.2 }}>
+            <h2 style={{ fontSize: '30px', fontWeight: 800, color: 'var(--text-primary)', margin: '0 0 8px 0', letterSpacing: '-0.5px', lineHeight: 1.2 }}>
               Latest Safety Reports
             </h2>
-            <p style={{ color: '#475569', fontSize: '14px', margin: 0 }}>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '14px', margin: 0 }}>
               Real-world insights from travelers like you.
             </p>
           </div>
@@ -61,8 +61,8 @@ export default function PostGrid({ posts = [] }) {
                   padding: '7px 16px', borderRadius: '999px', fontSize: '12px', fontWeight: 500,
                   cursor: 'pointer', transition: 'all 0.2s ease',
                   background: activeFilter === f ? '#2563EB' : 'transparent',
-                  color:      activeFilter === f ? 'white'   : '#64748B',
-                  border:     `1px solid ${activeFilter === f ? '#2563EB' : '#1E293B'}`,
+                  color:      activeFilter === f ? 'white'   : 'var(--text-muted)',
+                  border:     `1px solid ${activeFilter === f ? '#2563EB' : 'var(--border)'}`,
                   boxShadow:  activeFilter === f ? '0 4px 14px rgba(37,99,235,0.3)' : 'none',
                 }}
               >
@@ -78,7 +78,7 @@ export default function PostGrid({ posts = [] }) {
             {/* Search icon */}
             <svg
               style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}
-              width="16" height="16" fill="none" stroke="#64748B" viewBox="0 0 24 24" strokeWidth={2}
+              width="16" height="16" fill="none" stroke="var(--text-muted)" viewBox="0 0 24 24" strokeWidth={2}
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
@@ -91,14 +91,14 @@ export default function PostGrid({ posts = [] }) {
               placeholder="Search by area, location or keyword… e.g. Banjara Hills, NH-65"
               style={{
                 width: '100%', padding: '11px 44px 11px 42px', borderRadius: '12px',
-                background: 'rgba(255,255,255,0.04)',
-                border: `1px solid ${searchQuery ? 'rgba(59,130,246,0.4)' : 'rgba(255,255,255,0.09)'}`,
-                color: 'white', fontSize: '13px', outline: 'none',
+                background: 'var(--bg-card)',
+                border: `1px solid ${searchQuery ? 'rgba(59,130,246,0.4)' : 'var(--border)'}`,
+                color: 'var(--text-primary)', fontSize: '13px', outline: 'none',
                 boxSizing: 'border-box', transition: 'border-color 0.2s',
                 boxShadow: searchQuery ? '0 0 0 3px rgba(59,130,246,0.08)' : 'none',
               }}
               onFocus={e => { e.target.style.borderColor = 'rgba(59,130,246,0.5)'; }}
-              onBlur={e  => { e.target.style.borderColor = searchQuery ? 'rgba(59,130,246,0.4)' : 'rgba(255,255,255,0.09)'; }}
+              onBlur={e  => { e.target.style.borderColor = searchQuery ? 'rgba(59,130,246,0.4)' : 'var(--nav-pill-border)'; }}
             />
 
             {/* Clear button */}
@@ -107,8 +107,8 @@ export default function PostGrid({ posts = [] }) {
                 onClick={clearSearch}
                 style={{
                   position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)',
-                  background: 'rgba(255,255,255,0.08)', border: 'none', borderRadius: '6px',
-                  width: '24px', height: '24px', cursor: 'pointer', color: '#94A3B8',
+                  background: 'var(--nav-pill-border)', border: 'none', borderRadius: '6px',
+                  width: '24px', height: '24px', cursor: 'pointer', color: 'var(--text-secondary)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0,
                 }}
               >
@@ -121,10 +121,10 @@ export default function PostGrid({ posts = [] }) {
 
           {/* Search result summary */}
           {q && (
-            <p style={{ margin: '8px 0 0 2px', fontSize: '12px', color: '#64748B' }}>
+            <p style={{ margin: '8px 0 0 2px', fontSize: '12px', color: 'var(--text-muted)' }}>
               {filtered.length === 0
-                ? <span>No reports found for <strong style={{ color: '#94A3B8' }}>"{searchQuery}"</strong></span>
-                : <span><strong style={{ color: '#94A3B8' }}>{filtered.length}</strong> result{filtered.length !== 1 ? 's' : ''} for <strong style={{ color: '#94A3B8' }}>"{searchQuery}"</strong></span>
+                ? <span>No reports found for <strong style={{ color: 'var(--text-secondary)' }}>"{searchQuery}"</strong></span>
+                : <span><strong style={{ color: 'var(--text-secondary)' }}>{filtered.length}</strong> result{filtered.length !== 1 ? 's' : ''} for <strong style={{ color: 'var(--text-secondary)' }}>"{searchQuery}"</strong></span>
               }
             </p>
           )}
@@ -133,7 +133,7 @@ export default function PostGrid({ posts = [] }) {
         {/* Divider */}
         <div style={{
           height: '1px', marginBottom: '36px',
-          background: 'linear-gradient(to right, transparent, #1E293B 30%, #1E293B 70%, transparent)',
+          background: 'linear-gradient(to right, transparent, var(--border) 30%, var(--border) 70%, transparent)',
         }} />
 
         {/* ── Grid ── */}
@@ -150,7 +150,7 @@ export default function PostGrid({ posts = [] }) {
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '96px 0', textAlign: 'center' }}>
             <div style={{ fontSize: '36px', marginBottom: '16px' }}>{q ? '🔍' : '📭'}</div>
-            <p style={{ color: '#64748B', fontWeight: 500, fontSize: '15px', margin: '0 0 12px 0' }}>
+            <p style={{ color: 'var(--text-muted)', fontWeight: 500, fontSize: '15px', margin: '0 0 12px 0' }}>
               {q ? `No reports found in "${searchQuery}"` : 'No reports match this filter'}
             </p>
             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -165,8 +165,8 @@ export default function PostGrid({ posts = [] }) {
               )}
               {activeFilter !== 'All' && (
                 <button onClick={() => setActiveFilter('All')} style={{
-                  color: '#64748B', background: 'transparent',
-                  border: '1px solid #1E293B',
+                  color: 'var(--text-muted)', background: 'transparent',
+                  border: '1px solid var(--border)',
                   borderRadius: '8px', padding: '7px 16px', cursor: 'pointer', fontSize: '13px',
                 }}>
                   Show all risk levels
@@ -181,12 +181,12 @@ export default function PostGrid({ posts = [] }) {
           <button style={{
             display: 'flex', alignItems: 'center', gap: '8px',
             padding: '12px 28px', borderRadius: '12px',
-            background: 'transparent', border: '1px solid #1E293B',
-            color: '#64748B', fontSize: '13px', fontWeight: 500, cursor: 'pointer',
+            background: 'transparent', border: '1px solid var(--border)',
+            color: 'var(--text-muted)', fontSize: '13px', fontWeight: 500, cursor: 'pointer',
             transition: 'all 0.2s ease',
           }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(59,130,246,0.3)'; e.currentTarget.style.color = '#E2E8F0'; e.currentTarget.style.background = 'rgba(59,130,246,0.05)'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = '#1E293B'; e.currentTarget.style.color = '#64748B'; e.currentTarget.style.background = 'transparent'; }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(59,130,246,0.3)'; e.currentTarget.style.color = 'var(--text-primary)'; e.currentTarget.style.background = 'rgba(59,130,246,0.05)'; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'transparent'; }}
           >
             Load More Reports
             <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>

@@ -37,12 +37,12 @@ export default function Profile() {
   const activePosts = tab === 'my' ? myPosts : likedPosts;
 
   return (
-    <div style={{ minHeight: '100vh', background: '#060B14', paddingTop: '80px', paddingBottom: '64px' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-base)', paddingTop: '80px', paddingBottom: '64px' }}>
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '0 24px' }}>
 
         {/* Profile Card */}
         <div style={{
-          background: '#0C1322', border: '1px solid #1A2640', borderRadius: '20px',
+          background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '20px',
           overflow: 'hidden', marginBottom: '32px',
         }}>
           {/* Banner */}
@@ -52,7 +52,7 @@ export default function Profile() {
           }}>
             <div style={{
               position: 'absolute', inset: 0,
-              background: 'linear-gradient(to top, #0C1322, transparent)',
+              background: 'linear-gradient(to top, var(--bg-card), transparent)',
             }} />
           </div>
 
@@ -63,8 +63,8 @@ export default function Profile() {
                 width: '72px', height: '72px', borderRadius: '18px', flexShrink: 0,
                 background: 'linear-gradient(135deg, #3B82F6, #1D4ED8)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: 'white', fontSize: '28px', fontWeight: 800,
-                border: '4px solid #0C1322',
+                color: 'var(--text-primary)', fontSize: '28px', fontWeight: 800,
+                border: '4px solid var(--bg-card)',
                 boxShadow: '0 8px 24px rgba(59,130,246,0.3)',
               }}>
                 {profile?.name?.charAt(0)?.toUpperCase() || 'U'}
@@ -79,15 +79,15 @@ export default function Profile() {
                   </form>
                 ) : (
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'white', margin: 0 }}>{profile?.name || 'User'}</h2>
+                    <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>{profile?.name || 'User'}</h2>
                     <button onClick={() => setEditing(true)} style={{
-                      background: 'none', border: 'none', cursor: 'pointer', color: '#475569', padding: '4px',
+                      background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-dim)', padding: '4px',
                     }}>
                       <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
                     </button>
                   </div>
                 )}
-                <p style={{ color: '#64748B', fontSize: '13px', margin: '4px 0 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <p style={{ color: 'var(--text-muted)', fontSize: '13px', margin: '4px 0 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
                   {user?.email}
                 </p>
@@ -97,12 +97,12 @@ export default function Profile() {
             {/* Stats */}
             <div style={{ display: 'flex', gap: '32px' }}>
               <div>
-                <span style={{ fontSize: '22px', fontWeight: 800, color: 'white' }}>{myPosts.length}</span>
-                <span style={{ color: '#64748B', fontSize: '13px', marginLeft: '8px' }}>Posts</span>
+                <span style={{ fontSize: '22px', fontWeight: 800, color: 'var(--text-primary)' }}>{myPosts.length}</span>
+                <span style={{ color: 'var(--text-muted)', fontSize: '13px', marginLeft: '8px' }}>Posts</span>
               </div>
               <div>
-                <span style={{ fontSize: '22px', fontWeight: 800, color: 'white' }}>{likedPosts.length}</span>
-                <span style={{ color: '#64748B', fontSize: '13px', marginLeft: '8px' }}>Likes</span>
+                <span style={{ fontSize: '22px', fontWeight: 800, color: 'var(--text-primary)' }}>{likedPosts.length}</span>
+                <span style={{ color: 'var(--text-muted)', fontSize: '13px', marginLeft: '8px' }}>Likes</span>
               </div>
             </div>
           </div>
@@ -123,9 +123,9 @@ export default function Profile() {
         ) : activePosts.length === 0 ? (
           <div style={{
             textAlign: 'center', padding: '80px 0',
-            background: '#0C1322', border: '1px solid #1A2640', borderRadius: '16px',
+            background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '16px',
           }}>
-            <p style={{ color: '#64748B', fontSize: '14px' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>
               {tab === 'my' ? "You haven't created any reports yet." : "No liked reports found."}
             </p>
           </div>

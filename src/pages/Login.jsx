@@ -30,7 +30,7 @@ export function PasswordStrengthBar({ password }) {
         {[1, 2, 3, 4, 5].map(i => (
           <div key={i} style={{
             flex: 1, height: '4px', borderRadius: '2px',
-            background: i <= score ? color : 'rgba(255,255,255,0.08)',
+            background: i <= score ? color : 'var(--nav-pill-border)',
             transition: 'background 0.3s',
           }} />
         ))}
@@ -48,7 +48,7 @@ export function PasswordStrengthBar({ password }) {
           { key: 'special', label: 'Special char' },
         ].map(c => (
           <span key={c.key} style={{
-            fontSize: '10px', color: checks[c.key] ? '#34D399' : '#475569',
+            fontSize: '10px', color: checks[c.key] ? '#34D399' : 'var(--text-dim)',
             display: 'flex', alignItems: 'center', gap: '3px',
           }}>
             {checks[c.key] ? '✓' : '○'} {c.label}
@@ -105,37 +105,37 @@ function ForgotPasswordModal({ onClose }) {
 
   const inputStyle = {
     width: '100%', padding: '11px 14px', fontSize: '13px', boxSizing: 'border-box',
-    background: '#020617', border: '1px solid #1E293B', borderRadius: '10px',
-    color: '#E2E8F0', outline: 'none', fontFamily: 'inherit',
+    background: 'var(--bg-input)', border: '1px solid var(--border)', borderRadius: '10px',
+    color: 'var(--text-primary)', outline: 'none', fontFamily: 'inherit',
   };
 
   return (
     <div onClick={onClose} style={{
       position: 'fixed', inset: 0, zIndex: 10000,
-      background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)',
+      background: 'var(--modal-overlay)', backdropFilter: 'blur(8px)',
       display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px',
     }}>
       <div onClick={e => e.stopPropagation()} style={{
         width: '100%', maxWidth: '420px',
-        background: '#0F172A', border: '1px solid #1E293B', borderRadius: '20px',
-        boxShadow: '0 25px 50px rgba(0,0,0,0.5)', overflow: 'hidden',
+        background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '20px',
+        boxShadow: '0 25px 50px var(--shadow-card)', overflow: 'hidden',
       }}>
         {/* Header */}
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          padding: '20px 24px', borderBottom: '1px solid #1E293B',
+          padding: '20px 24px', borderBottom: '1px solid var(--border)',
         }}>
           <div>
-            <h2 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: 'white' }}>
+            <h2 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)' }}>
               {step === 1 ? 'Forgot Password' : 'Reset Password'}
             </h2>
-            <p style={{ margin: '4px 0 0', fontSize: '12px', color: '#64748B' }}>
+            <p style={{ margin: '4px 0 0', fontSize: '12px', color: 'var(--text-muted)' }}>
               {step === 1 ? 'We\'ll send an OTP to your email' : 'Enter OTP and set new password'}
             </p>
           </div>
           <button onClick={onClose} style={{
-            background: 'rgba(255,255,255,0.05)', border: 'none', borderRadius: '8px',
-            width: '32px', height: '32px', cursor: 'pointer', color: '#94A3B8',
+            background: 'var(--nav-pill-bg)', border: 'none', borderRadius: '8px',
+            width: '32px', height: '32px', cursor: 'pointer', color: 'var(--text-secondary)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>✕</button>
         </div>
@@ -158,38 +158,38 @@ function ForgotPasswordModal({ onClose }) {
 
           {step === 1 ? (
             <form onSubmit={handleSendOtp}>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#94A3B8', marginBottom: '6px' }}>Email Address</label>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px' }}>Email Address</label>
               <input type="email" value={email} onChange={e => setEmail(e.target.value)}
                 placeholder="you@example.com" style={inputStyle} required />
               <button type="submit" disabled={loading} style={{
                 width: '100%', marginTop: '16px', padding: '12px', borderRadius: '10px',
                 background: loading ? '#1E40AF' : '#2563EB', border: 'none',
-                color: 'white', fontSize: '13px', fontWeight: 600, cursor: loading ? 'wait' : 'pointer',
+                color: 'var(--text-primary)', fontSize: '13px', fontWeight: 600, cursor: loading ? 'wait' : 'pointer',
                 boxShadow: '0 4px 14px rgba(37,99,235,0.3)',
               }}>{loading ? 'Sending OTP...' : 'Send OTP'}</button>
             </form>
           ) : (
             <form onSubmit={handleReset} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#94A3B8', marginBottom: '6px' }}>OTP Code</label>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px' }}>OTP Code</label>
                 <input value={otp} onChange={e => setOtp(e.target.value)} maxLength={6}
                   placeholder="6-digit OTP" style={{ ...inputStyle, letterSpacing: '6px', textAlign: 'center', fontSize: '18px', fontWeight: 700 }} required />
               </div>
               <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#94A3B8', marginBottom: '6px' }}>New Password</label>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px' }}>New Password</label>
                 <input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)}
                   placeholder="••••••••" style={inputStyle} required />
                 <PasswordStrengthBar password={newPassword} />
               </div>
               <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#94A3B8', marginBottom: '6px' }}>Confirm New Password</label>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px' }}>Confirm New Password</label>
                 <input type="password" value={confirmNew} onChange={e => setConfirmNew(e.target.value)}
                   placeholder="••••••••" style={inputStyle} required />
               </div>
               <div style={{ display: 'flex', gap: '10px' }}>
                 <button type="button" onClick={() => { setStep(1); setError(''); setSuccess(''); }} style={{
                   flex: 1, padding: '11px', borderRadius: '10px', fontSize: '13px', fontWeight: 600,
-                  background: 'rgba(255,255,255,0.04)', border: '1px solid #1E293B', color: '#94A3B8', cursor: 'pointer',
+                  background: 'var(--nav-pill-bg)', border: '1px solid var(--border)', color: 'var(--text-secondary)', cursor: 'pointer',
                 }}>Back</button>
                 <button type="submit" disabled={loading} style={{
                   flex: 1, padding: '11px', borderRadius: '10px', fontSize: '13px', fontWeight: 600,
@@ -199,7 +199,7 @@ function ForgotPasswordModal({ onClose }) {
                 }}>{loading ? 'Resetting...' : 'Reset Password'}</button>
               </div>
               <button type="button" onClick={handleSendOtp} disabled={loading} style={{
-                background: 'none', border: 'none', color: '#64748B', fontSize: '11px',
+                background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '11px',
                 cursor: 'pointer', padding: '4px 0', textAlign: 'center',
               }}>Resend OTP</button>
             </form>
@@ -232,11 +232,11 @@ export default function Login() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#060B14', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '64px 24px 48px' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-base)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '64px 24px 48px' }}>
       <div style={{ width: '100%', maxWidth: '400px' }} className="fade-up">
         <div style={{
-          background: '#0C1322', border: '1px solid #1A2640', borderRadius: '20px',
-          padding: '36px', boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
+          background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '20px',
+          padding: '36px', boxShadow: '0 20px 60px var(--shadow-card)',
         }}>
           {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
@@ -250,8 +250,8 @@ export default function Login() {
                 <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.99 8.99a.75.75 0 1 1-1.06 1.061l-1.46-1.46v7.318A2.25 2.25 0 0 1 16.75 22h-3v-5a.75.75 0 0 0-.75-.75h-2A.75.75 0 0 0 10.25 17v5h-3a2.25 2.25 0 0 1-2.25-2.25v-7.318L3.53 13.89a.75.75 0 1 1-1.06-1.06l8.99-8.99Z" />
               </svg>
             </div>
-            <h2 style={{ fontSize: '22px', fontWeight: 700, color: 'white', margin: '0 0 6px' }}>Welcome back</h2>
-            <p style={{ color: '#64748B', fontSize: '13px', margin: 0 }}>Sign in to your TrustHut account</p>
+            <h2 style={{ fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 6px' }}>Welcome back</h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '13px', margin: 0 }}>Sign in to your SafeSteps account</p>
           </div>
 
           {error && (
@@ -264,11 +264,11 @@ export default function Login() {
 
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#94A3B8', marginBottom: '6px' }}>Email</label>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--text-secondary)', marginBottom: '6px' }}>Email</label>
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="input" placeholder="you@example.com" />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#94A3B8', marginBottom: '6px' }}>Password</label>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--text-secondary)', marginBottom: '6px' }}>Password</label>
               <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="input" placeholder="••••••••" />
             </div>
 
@@ -291,7 +291,7 @@ export default function Login() {
             </button>
           </form>
 
-          <p style={{ marginTop: '24px', textAlign: 'center', color: '#475569', fontSize: '13px' }}>
+          <p style={{ marginTop: '24px', textAlign: 'center', color: 'var(--text-dim)', fontSize: '13px' }}>
             Don't have an account?{' '}
             <Link to="/register" style={{ color: '#3B82F6', fontWeight: 600, textDecoration: 'none' }}>Sign Up</Link>
           </p>

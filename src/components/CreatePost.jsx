@@ -190,47 +190,47 @@ export default function CreatePost({ onClose, onCreated }) {
   const s = {
     label: {
       display: 'block', fontSize: '11px', fontWeight: 700,
-      color: '#64748B', marginBottom: '6px',
+      color: 'var(--text-muted)', marginBottom: '6px',
       textTransform: 'uppercase', letterSpacing: '0.09em',
     },
     input: {
-      width: '100%', background: 'rgba(255,255,255,0.04)',
-      border: '1px solid rgba(255,255,255,0.09)', borderRadius: '10px',
-      padding: '9px 12px', color: 'white', fontSize: '13px',
+      width: '100%', background: 'var(--nav-pill-bg)',
+      border: '1px solid var(--nav-pill-border)', borderRadius: '10px',
+      padding: '9px 12px', color: 'var(--text-primary)', fontSize: '13px',
       outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.2s',
       fontFamily: 'inherit',
     },
   };
 
   const focusIn  = e => { e.target.style.borderColor = 'rgba(59,130,246,0.55)'; };
-  const focusOut = e => { e.target.style.borderColor = form[e.target.name] ? 'rgba(16,185,129,0.3)' : 'rgba(255,255,255,0.09)'; };
+  const focusOut = e => { e.target.style.borderColor = form[e.target.name] ? 'rgba(16,185,129,0.3)' : 'var(--nav-pill-border)'; };
 
   return (
     <div onClick={onClose} style={{
       position: 'fixed', inset: 0, zIndex: 50,
       display: 'flex', alignItems: 'center', justifyContent: 'center',
-      background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(8px)', padding: '16px',
+      background: 'var(--modal-overlay)', backdropFilter: 'blur(8px)', padding: '16px',
     }}>
       <div onClick={e => e.stopPropagation()} style={{
-        background: '#0C1322', border: '1px solid rgba(255,255,255,0.08)',
+        background: 'var(--bg-card)', border: '1px solid var(--nav-pill-border)',
         borderRadius: '20px', width: '100%', maxWidth: '520px',
         maxHeight: '92vh', overflowY: 'auto',
-        boxShadow: '0 24px 64px rgba(0,0,0,0.6)',
+        boxShadow: '0 24px 64px var(--shadow-card)',
       }}>
 
         {/* Header */}
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          padding: '20px 24px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)',
+          padding: '20px 24px 16px', borderBottom: '1px solid var(--nav-border)',
         }}>
           <div>
-            <h2 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: 'white' }}>New Accessibility Report</h2>
-            <p style={{ margin: '3px 0 0', fontSize: '12px', color: '#475569' }}>Help others by sharing what you found</p>
+            <h2 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)' }}>New Accessibility Report</h2>
+            <p style={{ margin: '3px 0 0', fontSize: '12px', color: 'var(--text-dim)' }}>Help others by sharing what you found</p>
           </div>
           <button onClick={onClose} style={{
             width: '32px', height: '32px', borderRadius: '8px', flexShrink: 0,
-            background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
-            color: '#64748B', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: 'var(--nav-pill-bg)', border: '1px solid var(--nav-pill-border)',
+            color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -279,10 +279,10 @@ export default function CreatePost({ onClose, onCreated }) {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                     </svg>
                   </div>
-                  <p style={{ color: '#94A3B8', fontSize: '13px', fontWeight: 500, margin: '0 0 4px' }}>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '13px', fontWeight: 500, margin: '0 0 4px' }}>
                     Click to upload or drag & drop
                   </p>
-                  <p style={{ color: '#475569', fontSize: '11px', margin: 0 }}>
+                  <p style={{ color: 'var(--text-dim)', fontSize: '11px', margin: 0 }}>
                     Images auto-compressed • Videos max 750 KB
                   </p>
                 </div>
@@ -326,7 +326,7 @@ export default function CreatePost({ onClose, onCreated }) {
             ) : (
               <div style={{
                 position: 'relative', borderRadius: '14px', overflow: 'hidden',
-                border: '1px solid rgba(255,255,255,0.1)',
+                border: '1px solid var(--nav-pill-border)',
               }}>
                 {mediaType === 'video' ? (
                   <video src={mediaPreview} controls style={{ width: '100%', maxHeight: '200px', objectFit: 'cover', display: 'block' }} />
@@ -338,7 +338,7 @@ export default function CreatePost({ onClose, onCreated }) {
                 <button type="button" onClick={removeMedia} style={{
                   position: 'absolute', top: '8px', right: '8px',
                   width: '28px', height: '28px', borderRadius: '8px',
-                  background: 'rgba(0,0,0,0.7)', border: 'none',
+                  background: 'var(--modal-overlay)', border: 'none',
                   color: 'white', cursor: 'pointer',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   backdropFilter: 'blur(8px)',
@@ -351,13 +351,13 @@ export default function CreatePost({ onClose, onCreated }) {
                 {/* File info bar */}
                 <div style={{
                   padding: '8px 12px', display: 'flex', alignItems: 'center', gap: '8px',
-                  background: 'rgba(255,255,255,0.03)', borderTop: '1px solid rgba(255,255,255,0.06)',
+                  background: 'var(--bg-card-hover)', borderTop: '1px solid var(--nav-border)',
                 }}>
                   <span style={{ fontSize: '14px' }}>{mediaType === 'video' ? '🎬' : '📸'}</span>
-                  <span style={{ color: '#94A3B8', fontSize: '11px', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  <span style={{ color: 'var(--text-secondary)', fontSize: '11px', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {mediaFile?.name || 'Camera capture'}
                   </span>
-                  <span style={{ color: '#475569', fontSize: '10px', flexShrink: 0 }}>
+                  <span style={{ color: 'var(--text-dim)', fontSize: '10px', flexShrink: 0 }}>
                     {mediaFile?.size ? `${(mediaFile.size / 1024).toFixed(0)} KB` : ''}
                   </span>
                 </div>
@@ -434,26 +434,26 @@ export default function CreatePost({ onClose, onCreated }) {
               </button>
             </div>
 
-            <p style={{ fontSize: '11px', color: '#475569', margin: '0 0 8px 0' }}>
+            <p style={{ fontSize: '11px', color: 'var(--text-dim)', margin: '0 0 8px 0' }}>
               Click anywhere on the map — coordinates &amp; address will auto-fill instantly.
             </p>
 
-            <div style={{ borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)', height: '220px' }}>
+            <div style={{ borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--nav-pill-border)', height: '220px' }}>
               {isLoaded ? (
                 <GoogleMap
                   mapContainerStyle={{ width: '100%', height: '100%' }}
                   zoom={13} center={mapCenter} onClick={handleMapClick}
                   options={{
                     styles: [
-                      { elementType: 'geometry', stylers: [{ color: '#0f1629' }] },
-                      { elementType: 'labels.text.stroke', stylers: [{ color: '#0f1629' }] },
-                      { elementType: 'labels.text.fill', stylers: [{ color: '#6b7a99' }] },
-                      { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#1e2a42' }] },
-                      { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#8a9bbf' }] },
-                      { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#080f1e' }] },
+                      { elementType: 'geometry', stylers: [{ color: '#e8eaed' }] },
+                      { elementType: 'labels.text.stroke', stylers: [{ color: '#e8eaed' }] },
+                      { elementType: 'labels.text.fill', stylers: [{ color: '#5b6abf' }] },
+                      { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#d4d6db' }] },
+                      { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#5b6abf' }] },
+                      { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#c4d7f2' }] },
                       { featureType: 'poi', elementType: 'labels', stylers: [{ visibility: 'off' }] },
-                      { featureType: 'transit', elementType: 'geometry', stylers: [{ color: '#162030' }] },
-                      { featureType: 'administrative', elementType: 'geometry.stroke', stylers: [{ color: '#1e2d4a' }] },
+                      { featureType: 'transit', elementType: 'geometry', stylers: [{ color: '#d9dce1' }] },
+                      { featureType: 'administrative', elementType: 'geometry.stroke', stylers: [{ color: '#c8cad0' }] },
                     ],
                     disableDefaultUI: true, zoomControl: true,
                     streetViewControl: false, mapTypeControl: false, fullscreenControl: false,
@@ -469,7 +469,7 @@ export default function CreatePost({ onClose, onCreated }) {
                   )}
                 </GoogleMap>
               ) : (
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', background: '#0F1629' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', background: 'var(--map-loading-bg)' }}>
                   <Spinner size={24} />
                 </div>
               )}
@@ -507,9 +507,9 @@ export default function CreatePost({ onClose, onCreated }) {
             <label style={s.label}>Location Name</label>
             <input name="location_name" value={form.location_name} onChange={handleChange} required
               placeholder={geocoding ? 'Fetching address...' : 'Auto-filled from map, or type manually'}
-              style={{ ...s.input, borderColor: form.location_name ? 'rgba(16,185,129,0.35)' : 'rgba(255,255,255,0.09)' }}
+              style={{ ...s.input, borderColor: form.location_name ? 'rgba(16,185,129,0.35)' : 'var(--nav-pill-border)' }}
               onFocus={e => { e.target.style.borderColor = 'rgba(59,130,246,0.55)'; }}
-              onBlur={e => { e.target.style.borderColor = form.location_name ? 'rgba(16,185,129,0.35)' : 'rgba(255,255,255,0.09)'; }}
+              onBlur={e => { e.target.style.borderColor = form.location_name ? 'rgba(16,185,129,0.35)' : 'var(--nav-pill-border)'; }}
             />
           </div>
 
@@ -520,9 +520,9 @@ export default function CreatePost({ onClose, onCreated }) {
                 <label style={s.label}>{field.charAt(0).toUpperCase() + field.slice(1)}</label>
                 <input name={field} value={form[field]} onChange={handleChange} required
                   placeholder="Auto-filled from map"
-                  style={{ ...s.input, color: form[field] ? '#93C5FD' : '#64748B' }}
+                  style={{ ...s.input, color: form[field] ? '#93C5FD' : 'var(--text-muted)' }}
                   onFocus={e => { e.target.style.borderColor = 'rgba(59,130,246,0.55)'; }}
-                  onBlur={e => { e.target.style.borderColor = form[field] ? 'rgba(59,130,246,0.25)' : 'rgba(255,255,255,0.09)'; }}
+                  onBlur={e => { e.target.style.borderColor = form[field] ? 'rgba(59,130,246,0.25)' : 'var(--nav-pill-border)'; }}
                 />
               </div>
             ))}
@@ -537,9 +537,9 @@ export default function CreatePost({ onClose, onCreated }) {
                   style={{
                     flex: 1, padding: '9px 12px', borderRadius: '10px', fontSize: '12px', fontWeight: 600,
                     cursor: 'pointer', transition: 'all 0.2s', fontFamily: 'inherit',
-                    border: `1px solid ${form.post_type === opt.v ? opt.c : 'rgba(255,255,255,0.09)'}`,
+                    border: `1px solid ${form.post_type === opt.v ? opt.c : 'var(--nav-pill-border)'}`,
                     background: form.post_type === opt.v ? `${opt.c}15` : 'rgba(255,255,255,0.03)',
-                    color: form.post_type === opt.v ? opt.c : '#94A3B8',
+                    color: form.post_type === opt.v ? opt.c : 'var(--text-secondary)',
                   }}>{opt.l}</button>
               ))}
             </div>
@@ -598,18 +598,18 @@ export default function CreatePost({ onClose, onCreated }) {
           <div style={{ display: 'flex', gap: '10px', paddingTop: '4px' }}>
             <button type="button" onClick={onClose} style={{
               flex: 1, padding: '11px', borderRadius: '10px',
-              background: 'transparent', border: '1px solid rgba(255,255,255,0.1)',
-              color: '#94A3B8', fontSize: '13px', fontWeight: 500, cursor: 'pointer',
+              background: 'transparent', border: '1px solid var(--nav-pill-border)',
+              color: 'var(--text-secondary)', fontSize: '13px', fontWeight: 500, cursor: 'pointer',
               fontFamily: 'inherit',
             }}
               onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'; e.currentTarget.style.color = 'white'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; e.currentTarget.style.color = '#94A3B8'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--nav-pill-border)'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
             >Cancel</button>
 
             <button type="submit" disabled={loading} style={{
               flex: 1, padding: '11px', borderRadius: '10px',
               background: loading ? 'rgba(37,99,235,0.5)' : '#2563EB',
-              border: 'none', color: 'white', fontSize: '13px', fontWeight: 600,
+              border: 'none', color: 'var(--text-primary)', fontSize: '13px', fontWeight: 600,
               cursor: loading ? 'not-allowed' : 'pointer',
               boxShadow: loading ? 'none' : '0 4px 14px rgba(37,99,235,0.35)',
               transition: 'all 0.2s', fontFamily: 'inherit',
@@ -623,7 +623,7 @@ export default function CreatePost({ onClose, onCreated }) {
 
       <style>{`
         @keyframes cpSpin { to { transform: rotate(360deg); } }
-        select option { background: #0C1322; color: white; }
+        select option { background: var(--bg-card); color: var(--text-primary); }
       `}</style>
     </div>
   );

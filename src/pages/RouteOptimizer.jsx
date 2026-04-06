@@ -49,7 +49,7 @@ export default function RouteOptimizer() {
     infoWindowRef.current = iw;
 
     reports.forEach(r => {
-      const color = RISK_COLOR[r.risk_level] || '#64748B';
+      const color = RISK_COLOR[r.risk_level] || 'var(--text-muted)';
       const marker = new window.google.maps.Marker({
         position: { lat: r.latitude, lng: r.longitude },
         map,
@@ -193,42 +193,42 @@ export default function RouteOptimizer() {
 
   const getRatingColor = (rating) => {
     const map = { 'Very Safe': '#10B981', Safe: '#34D399', Moderate: '#F59E0B', Risky: '#F97316', Dangerous: '#EF4444' };
-    return map[rating] || '#94A3B8';
+    return map[rating] || 'var(--text-secondary)';
   };
 
   const selectedRoute = routes[selectedIdx];
 
   if (!isLoaded) return (
-    <div style={{ minHeight: '100vh', background: '#060B14', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-base)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div className="spinner" />
     </div>
   );
 
   return (
-    <div style={{ paddingTop: '64px', background: '#060B14', minHeight: '100vh' }}>
+    <div style={{ paddingTop: '64px', background: 'var(--bg-base)', minHeight: '100vh' }}>
       {/* Search bar */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: '10px', padding: '14px 24px',
-        background: 'rgba(6,11,20,0.97)', borderBottom: '1px solid #1A2640', flexWrap: 'wrap',
+        background: 'var(--bg-card)', borderBottom: '1px solid var(--border)', flexWrap: 'wrap',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flex: 1, minWidth: '200px' }}>
           <span style={{ color: '#10B981', fontSize: '16px' }}>●</span>
           <input value={startInput} onChange={e => setStartInput(e.target.value)}
             placeholder="Start location (e.g. Hitech City, Hyderabad)"
             onKeyDown={e => e.key === 'Enter' && findRoutes()}
-            style={{ flex: 1, padding: '9px 14px', borderRadius: '10px', fontSize: '13px', background: '#111827', border: '1px solid #1E293B', color: 'white', outline: 'none' }} />
+            style={{ flex: 1, padding: '9px 14px', borderRadius: '10px', fontSize: '13px', background: 'var(--bg-input)', border: '1px solid var(--border)', color: 'var(--text-primary)', outline: 'none' }} />
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flex: 1, minWidth: '200px' }}>
           <span style={{ color: '#EF4444', fontSize: '16px' }}>●</span>
           <input value={endInput} onChange={e => setEndInput(e.target.value)}
             placeholder="Destination (e.g. LB Nagar, Hyderabad)"
             onKeyDown={e => e.key === 'Enter' && findRoutes()}
-            style={{ flex: 1, padding: '9px 14px', borderRadius: '10px', fontSize: '13px', background: '#111827', border: '1px solid #1E293B', color: 'white', outline: 'none' }} />
+            style={{ flex: 1, padding: '9px 14px', borderRadius: '10px', fontSize: '13px', background: 'var(--bg-input)', border: '1px solid var(--border)', color: 'var(--text-primary)', outline: 'none' }} />
         </div>
         <button onClick={findRoutes} disabled={loading} style={{
           padding: '9px 22px', borderRadius: '10px', fontSize: '13px', fontWeight: 600,
           border: 'none', cursor: loading ? 'not-allowed' : 'pointer',
-          background: loading ? '#1E293B' : '#2563EB', color: 'white',
+          background: loading ? 'var(--border)' : '#2563EB', color: 'white',
           boxShadow: loading ? 'none' : '0 4px 14px rgba(37,99,235,0.35)', transition: 'all 0.2s',
         }}>
           {loading ? 'Analyzing…' : '🛡️ Find Safest Route'}
@@ -250,11 +250,17 @@ export default function RouteOptimizer() {
             center={defaultCenter} zoom={12} onLoad={onMapLoad}
             options={{
               styles: [
-                { elementType: 'geometry', stylers: [{ color: '#0C1322' }] },
-                { elementType: 'labels.text.stroke', stylers: [{ color: '#0C1322' }] },
-                { elementType: 'labels.text.fill', stylers: [{ color: '#64748B' }] },
-                { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#1A2640' }] },
-                { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#0a1628' }] },
+                { elementType: 'geometry', stylers: [{ color: '#f5f5f5' }] },
+                { elementType: 'labels.text.stroke', stylers: [{ color: '#ffffff' }] },
+                { elementType: 'labels.text.fill', stylers: [{ color: '#616161' }] },
+                { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#ffffff' }] },
+                { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#e0e0e0' }] },
+                { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#dadada' }] },
+                { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#c9d6e3' }] },
+                { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#9e9e9e' }] },
+                { featureType: 'poi', elementType: 'geometry', stylers: [{ color: '#eeeeee' }] },
+                { featureType: 'transit', elementType: 'geometry', stylers: [{ color: '#e5e5e5' }] },
+                { featureType: 'administrative', elementType: 'geometry.stroke', stylers: [{ color: '#c0c0c0' }] },
               ],
               disableDefaultUI: false, zoomControl: true, streetViewControl: false, mapTypeControl: false,
             }}
@@ -263,10 +269,10 @@ export default function RouteOptimizer() {
 
         {/* Side Panel */}
         {routes.length > 0 && (
-          <div style={{ width: '380px', background: '#0C1322', borderLeft: '1px solid #1A2640', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ width: '380px', background: 'var(--bg-card)', borderLeft: '1px solid var(--border)', display: 'flex', flexDirection: 'column' }}>
             
             {/* Tabs */}
-            <div style={{ display: 'flex', borderBottom: '1px solid #1A2640', flexShrink: 0 }}>
+            <div style={{ display: 'flex', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
               {[
                 { key: 'routes', label: '🛡️ Routes', count: routes.length },
                 { key: 'reports', label: '⚠️ Reports', count: selectedRoute?.nearby_reports?.length || 0 },
@@ -274,13 +280,13 @@ export default function RouteOptimizer() {
                 <button key={tab.key} onClick={() => setActiveTab(tab.key)} style={{
                   flex: 1, padding: '12px 8px', background: 'none', border: 'none',
                   cursor: 'pointer', fontSize: '13px', fontWeight: 600, transition: 'all 0.2s',
-                  color: activeTab === tab.key ? '#3B82F6' : '#64748B',
+                  color: activeTab === tab.key ? '#3B82F6' : 'var(--text-muted)',
                   borderBottom: `2px solid ${activeTab === tab.key ? '#3B82F6' : 'transparent'}`,
                 }}>
                   {tab.label}
                   <span style={{
                     marginLeft: '6px', padding: '1px 7px', borderRadius: '999px', fontSize: '10px',
-                    background: activeTab === tab.key ? '#3B82F620' : '#1E293B', color: activeTab === tab.key ? '#3B82F6' : '#64748B',
+                    background: activeTab === tab.key ? '#3B82F620' : 'var(--border)', color: activeTab === tab.key ? '#3B82F6' : 'var(--text-muted)',
                   }}>{tab.count}</span>
                 </button>
               ))}
@@ -299,33 +305,33 @@ export default function RouteOptimizer() {
                   <div key={i} onClick={() => highlightRoute(i)}
                     style={{
                       padding: '14px', borderRadius: '12px', marginBottom: '10px', cursor: 'pointer',
-                      border: `1px solid ${isSelected ? routeColor : '#1A2640'}`,
-                      background: isSelected ? `${routeColor}08` : '#111827', transition: 'all 0.2s',
+                      border: `1px solid ${isSelected ? routeColor : 'var(--border)'}`,
+                      background: isSelected ? `${routeColor}08` : 'var(--bg-input)', transition: 'all 0.2s',
                     }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
                       <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: routeColor, boxShadow: `0 0 8px ${routeColor}60` }} />
-                      <span style={{ fontSize: '13px', fontWeight: 600, color: 'white' }}>{route.summary}</span>
+                      <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>{route.summary}</span>
                       {i === 0 && (
                         <span style={{ padding: '2px 8px', borderRadius: '999px', fontSize: '9px', fontWeight: 700, background: '#10B98120', color: '#10B981', letterSpacing: '0.5px' }}>SAFEST</span>
                       )}
                     </div>
 
                     <div style={{ display: 'flex', gap: '14px', marginBottom: '10px' }}>
-                      <span style={{ fontSize: '12px', color: '#94A3B8' }}>📏 {route.distance}</span>
-                      <span style={{ fontSize: '12px', color: '#94A3B8' }}>⏱ {route.duration}</span>
+                      <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>📏 {route.distance}</span>
+                      <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>⏱ {route.duration}</span>
                     </div>
 
                     <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 12px', borderRadius: '8px', background: 'rgba(0,0,0,0.3)' }}>
                       <div>
-                        <div style={{ fontSize: '10px', color: '#64748B', marginBottom: '2px' }}>Safety Rating</div>
+                        <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginBottom: '2px' }}>Safety Rating</div>
                         <div style={{ fontSize: '14px', fontWeight: 700, color: ratingColor }}>{route.safety_rating}</div>
                       </div>
                       <div style={{ textAlign: 'right' }}>
-                        <div style={{ fontSize: '10px', color: '#64748B', marginBottom: '2px' }}>Risk Score</div>
-                        <div style={{ fontSize: '14px', fontWeight: 700, color: '#CBD5E1' }}>{route.risk_score}</div>
+                        <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginBottom: '2px' }}>Risk Score</div>
+                        <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-primary)' }}>{route.risk_score}</div>
                       </div>
                       <div style={{ textAlign: 'right' }}>
-                        <div style={{ fontSize: '10px', color: '#64748B', marginBottom: '2px' }}>Reports</div>
+                        <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginBottom: '2px' }}>Reports</div>
                         <div style={{ fontSize: '14px', fontWeight: 700, color: '#F59E0B' }}>{route.nearby_reports?.length || 0}</div>
                       </div>
                     </div>
@@ -351,10 +357,10 @@ export default function RouteOptimizer() {
               {activeTab === 'reports' && (
                 <div>
                   {selectedRoute && (
-                    <div style={{ marginBottom: '14px', padding: '10px 12px', borderRadius: '10px', background: '#111827', border: '1px solid #1A2640' }}>
-                      <span style={{ fontSize: '12px', color: '#64748B' }}>Reports along: </span>
-                      <span style={{ fontSize: '12px', fontWeight: 600, color: '#CBD5E1' }}>{selectedRoute.summary}</span>
-                      <span style={{ fontSize: '11px', color: '#475569', display: 'block', marginTop: '2px' }}>
+                    <div style={{ marginBottom: '14px', padding: '10px 12px', borderRadius: '10px', background: 'var(--bg-input)', border: '1px solid var(--border)' }}>
+                      <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Reports along: </span>
+                      <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>{selectedRoute.summary}</span>
+                      <span style={{ fontSize: '11px', color: 'var(--text-dim)', display: 'block', marginTop: '2px' }}>
                         Showing incidents within 500m of the route path
                       </span>
                     </div>
@@ -363,21 +369,21 @@ export default function RouteOptimizer() {
                   {(!selectedRoute?.nearby_reports || selectedRoute.nearby_reports.length === 0) ? (
                     <div style={{ textAlign: 'center', padding: '40px 20px' }}>
                       <div style={{ fontSize: '32px', marginBottom: '12px' }}>✅</div>
-                      <p style={{ color: '#64748B', fontSize: '13px', margin: 0 }}>No reported hazards found near this route!</p>
+                      <p style={{ color: 'var(--text-muted)', fontSize: '13px', margin: 0 }}>No reported hazards found near this route!</p>
                     </div>
                   ) : (
                     selectedRoute.nearby_reports.map((r, i) => {
-                      const color = RISK_COLOR[r.risk_level] || '#64748B';
+                      const color = RISK_COLOR[r.risk_level] || 'var(--text-muted)';
                       const catIcon = CATEGORY_ICON[r.risk_category] || '📍';
                       return (
                         <div key={i} style={{
                           display: 'flex', gap: '12px', padding: '12px',
                           borderRadius: '10px', marginBottom: '8px',
-                          background: '#111827', border: '1px solid #1A2640',
+                          background: 'var(--bg-input)', border: '1px solid var(--border)',
                           cursor: 'pointer', transition: 'border-color 0.2s',
                         }}
                           onMouseEnter={e => e.currentTarget.style.borderColor = color}
-                          onMouseLeave={e => e.currentTarget.style.borderColor = '#1A2640'}
+                          onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
                           onClick={() => {
                             if (mapRef.current) {
                               mapRef.current.panTo({ lat: r.latitude, lng: r.longitude });
@@ -394,17 +400,17 @@ export default function RouteOptimizer() {
                           }}>{catIcon}</div>
 
                           <div style={{ flex: 1, minWidth: 0 }}>
-                            <div style={{ fontSize: '12px', fontWeight: 600, color: '#E2E8F0', marginBottom: '3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                               {r.title}
                             </div>
-                            <div style={{ fontSize: '11px', color: '#64748B', marginBottom: '5px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '5px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                               📍 {r.location_name || 'Hyderabad'}
                             </div>
                             <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-                              <span style={{ padding: '2px 8px', borderRadius: '999px', fontSize: '10px', fontWeight: 600, color: 'white', background: color }}>
+                              <span style={{ padding: '2px 8px', borderRadius: '999px', fontSize: '10px', fontWeight: 600, color: 'var(--text-primary)', background: color }}>
                                 {(r.risk_level || '').toUpperCase()}
                               </span>
-                              <span style={{ fontSize: '10px', color: '#475569' }}>~{r.distance_m}m away</span>
+                              <span style={{ fontSize: '10px', color: 'var(--text-dim)' }}>~{r.distance_m}m away</span>
                             </div>
                           </div>
                         </div>
